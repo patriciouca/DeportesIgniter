@@ -8,7 +8,7 @@ class Login_model extends CI_Model {
  
  public function login_user($username,$password)
  {
-	 $this->db->where('correo',$username);
+	 $this->db->where('usuario',$username);
 	 $this->db->where('password',$password);
 	 $query = $this->db->get('usuario');
 	 if($query->num_rows() == 1)

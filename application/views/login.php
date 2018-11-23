@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 
  <?php
- $username = array('name' => 'username', 'type' => 'email' , 'id' => 'inputEmail' ,'class' => 'form-control' ,'placeholder' => 'Nombre de usuario');
+ $username = array('name' => 'username', 'type' => 'text' , 'id' => 'inputEmail' ,'class' => 'form-control' ,'placeholder' => 'Nombre de usuario');
  $password = array('name' => 'password', 'type' => 'password' , 'id' => 'inputPassword' , 'class' => 'form-control' , 'placeholder' => 'Introduce tu password');
  $submit = array('name' => 'submit','class' => 'btn btn-primary', 'value' => 'Iniciar sesión', 'title' => 'Iniciar sesión');
  $formulario = array('id' => 'Login');

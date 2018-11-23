@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 
 <div class="container">
- hola
+    <h1>Bienvenido administrador</h1>
  </div>
 
 </body>
