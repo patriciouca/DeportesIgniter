@@ -21,10 +21,16 @@ class Pista_model extends CI_Model {
     }
 
     public function insertPista($data){
+       if($data['nombre']== null || $data['nombre'] == "")
+           throw new Exception("No se puede crear una pista sin nombre");
+
         $this->db->insert('pista', $data);
+
     }
 
    public function insertTipoPista($data){
+       if($data['nombre']== null || $data['nombre'] == "")
+           throw new Exception("No se puede crear un tipo de pista sin nombre");
        $this->db->insert('tipopista', $data);
    }
 

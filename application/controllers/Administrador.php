@@ -24,7 +24,9 @@ class Administrador extends CI_Controller {
          */
      }
 
-     public function index()
+
+
+     public function index($error=null)
      {
 
              $data['titulo'] = 'Bienvenido Admin';
@@ -38,26 +40,38 @@ class Administrador extends CI_Controller {
 
 
              $this->load->view('admin/header',$data);
+
+             if($error != null)
+                 $this->load->view('error',array('error'=>$error));
+
              $this->load->view('admin/index',$data);
      }
 
     public function gestionar(){
 
-         if($this->input->post('envTipoPista') != null )
-         {
-             $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
-             $this->pista_model->insertTipoPista($dataTipoPista);
-             $this->index();
-         }
-         else if($this->input->post('envPista') != null)
-         {
-             $dataPista = array(
-                 'idTipoPista' => $this->input->post('tipo_pista'),
-                 'nombre' => $this->input->post('nPista'),
-             );
-             $this->pista_model->insertPista($dataPista);
-             $this->index();
-         }
+        try{
+             if($this->input->post('envTipoPista') != null )
+             {
+                 $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
+                 $this->pista_model->insertTipoPista($dataTipoPista);
+                 $this->index();
+             }
+             else if($this->input->post('envPista') != null)
+             {
+                 $dataPista = array(
+                     'idTipoPista' => $this->input->post('tipo_pista'),
+                     'nombre' => $this->input->post('nPista'),
+                 );
+                 
+                     $this->pista_model->insertPista($dataPista);
+                     $this->index();
+
+
+             }
+        }catch (Exception $e)
+        {
+            $this->index($e->getMessage());
+        }
     }
      /*
      public function gestionar(){
