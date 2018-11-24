@@ -9,7 +9,7 @@ class Administrador extends CI_Controller {
          $this->load->library(array('session'));
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
-         $this->load->database();
+         $this->load->database('default');
          $this->load->model('pista_model');
          $this->load->model('login_model');
      }
@@ -33,6 +33,16 @@ class Administrador extends CI_Controller {
 
              $this->load->view('admin/header',$data);
              $this->load->view('admin/index',$data);
+     }
+
+     public function dataSubmitted(){
+
+         $dataPista = array('idTipoPista' => $this->input->post('nTipoPista'),
+             'nombre' => $this->input->post('nPista'),
+
+         );
+        $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
+        $this->pista_model->insertTipoPista($dataTipoPista);
      }
 
      /*

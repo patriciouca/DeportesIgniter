@@ -4,56 +4,112 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <div class="container">
-    <h1><?php echo $titulo ?></h1>
+    <h1>Administración</h1>
  </div>
-<h1>CREAR</h1>
+
+
 <div class="col-md-6 ">
     <div class="card mb-6 ">
-        <form action="admin.php" method="post">
-            <h3>Pista</h3>
+        <h3>Crear pista</h3>
+        <div class="card-body"/>
+            <div class=" justify-content-between align-items-center">
+                <div id="form_input">
+                    <?php
+
+                    // Open form and set URL for submit form
+                    echo form_open(base_url().'administrador/dataSubmitted');
+
+                    // Show Name Field in View Page
+                    echo form_label('Nombre pista ', 'nPista');
+                    $data= array(
+                        'name' => 'nPista',
+                        'placeholder' => 'Introduzca el nombre de la pista',
+                        'class' => 'input_box'
+                    );
+                    echo form_input($data);
+                    echo "<br>";
+                    ?>
+                    <?php echo form_label('Tipo pista '); ?>
+                    <select name="tipoPista">
+                        <option value="none" selected="selected">------------Elije un tipo de pista------------</option>
+                        <?php foreach($tipoPistas as $row): ?>
+                            <option value="<?php echo $row->id?>"><?php echo $row->nombre?></option>
+                        <?php endforeach;?>
+                    </select>
 
 
-            <div class="card-body">
-
-                <div class=" justify-content-between align-items-center">
-                    <span>Nombre</span> <input type="text" class="d-block" name="nombrePista"><br>
-                    <span>Tipo pista</span>
-                    <select name="idTipoPista" class="d-block">
-                        <?php
-
-                        foreach ($tipoPistas as $filas) {
-                            echo "<option value=".$filas->id.">".$filas->nombre."</option>";
-                        }
-
-                        ?>
-
-                    </select><br>
-                    <input class="btn btn-primary" type="submit">
 
                 </div>
 
+
+                <div id="form_button">
+                    <?php
+                    $data = array(
+                        'type' => 'submit',
+                        'value'=> 'Enviar',
+                        'class'=> 'submit'
+                    );
+                    echo form_submit($data); ?>
+                </div>
+
+
+                <?php echo form_close();?>
+                <?php
+                    if(isset($nombrePista))
+                        echo $nombrePista;
+                ?>
+
             </div>
-        </form>
+
     </div>
+    </form>
+</div>
 </div>
 
 <div class="col-md-6 ">
     <div class="card mb-6 ">
-        <form action="admin.php" method="post">
-            <h3>Tipo pista</h3>
+        <h3>Crear tipo pista</h3>
+        <div class="card-body"/>
+        <div class=" justify-content-between align-items-center">
+            <div id="form_input">
+                <?php
+
+                // Open form and set URL for submit form
+                echo form_open('Administrador/dataSubmitted');
+
+                // Show Name Field in View Page
+                echo form_label('Nombre tipo pista ', 'nTipoPista');
+                $data= array(
+                    'name' => 'nTipoPista',
+                    'placeholder' => 'Introduzca el tipo de la pista',
+                    'class' => 'input_box'
+                );
+                echo form_input($data);
 
 
-            <div class="card-body">
-
-                <div class=" justify-content-between align-items-center">
-                    <span>Nombre</span> <input type="text" class="d-block" name="nombreTit"><br>
-                    <input class="btn btn-primary" type="submit">
-
-                </div>
-
+                ?>
             </div>
-        </form>
+
+
+            <div id="form_button">
+                <?php
+                $data = array(
+                    'type' => 'submit',
+                    'value'=> 'Enviar',
+                    'class'=> 'submit'
+                );
+                echo form_submit($data); ?>
+            </div>
+
+
+            <?php echo form_close();?>
+
+
+        </div>
+
     </div>
+    </form>
+</div>
 </div>
 
 </body>

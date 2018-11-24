@@ -11,7 +11,7 @@ class Pista_model extends CI_Model {
     }
 
     public function insertPista($idPista,$nombre){
-        $this->db->query('INSERT INTO pista(idPista,nombre) VALUES($idPista,$nombre)');
+        $this->db->insert('pista', $idPista,$nombre);
 
     }
    public function selectTipoPista(){
@@ -19,8 +19,8 @@ class Pista_model extends CI_Model {
        return $query->result();
    }
 
-   public function insertTipoPista($nombre){
-       $this->db->query('INSERT INTO tipopista(nombre) VALUES($nombre)');
+   public function insertTipoPista($data){
+       $this->db->insert('tipopista', $data);
 
    }
 
