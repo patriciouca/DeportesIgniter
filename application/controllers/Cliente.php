@@ -26,7 +26,7 @@ class Cliente extends CI_Controller {
          $data['titulo'] = 'Bienvenido Cliente';
 
          $data['opciones'][0] = 'Alquilar Pista';
-         $data['opciones'][0] = 'Unirse a Torneo';
+         $data['opciones'][1] = 'Unirse a Torneo';
 
 
          $this->load->view('cliente/header',$data);
