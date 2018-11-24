@@ -9,9 +9,9 @@ class Login_model extends CI_Model {
  
  public function login_user($username,$password)
  {
-	 $this->db->where('usuario',$username);
+	 $this->db->where('Cliente',$username);
 	 $this->db->where('password',$password);
-	 $query = $this->db->get('usuario');
+	 $query = $this->db->get('Cliente');
 	 if($query->num_rows() == 1)
 	 {
 	 	return $query->row();

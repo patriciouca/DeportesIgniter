@@ -62,7 +62,7 @@ class Administrador extends CI_Controller {
                      'idTipoPista' => $this->input->post('tipo_pista'),
                      'nombre' => $this->input->post('nPista'),
                  );
-                 
+
                      $this->pista_model->insertPista($dataPista);
                      $this->index();
 

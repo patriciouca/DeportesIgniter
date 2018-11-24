@@ -26,6 +26,9 @@ class Login extends CI_Controller {
 			 case 'administrador':
 			 	redirect(base_url().'administrador');
 			 break;
+            case 'cliente':
+                redirect(base_url(). 'cliente');
+                break;
 		}
 
 		$this->load->view('header');
@@ -56,7 +59,8 @@ class Login extends CI_Controller {
 			                 'id_usuario' => $check_user->id,
 			                 'perfil' => $this->usuario_model->getTipo($check_user->id_tipo),
 			                 'username' => $check_user->username
-			             ); 
+			             );
+
 			 $this->session->set_userdata($data);
 			 $this->index();
 		 }else{
