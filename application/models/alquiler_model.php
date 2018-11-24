@@ -9,9 +9,8 @@ class Alquiler_model extends CI_Model {
         return $query->result();
     }
 
-    public function insertAlquiler($idUsuario,$idPista,$fecha,$precio,$horaInicio,$horaFin){
-        $query = $this->db->query('INSERT INTO alquiler(idUsuario,idPista,fecha,precio,horaInicio,horaFin)
-                  VALUES($idUsuario,$idPista,$fecha,$precio,$horaInicio,$horaFin)');
+    public function insertAlquiler($data){
+        $this->db->insert('alquiler', $data);
 
 
     }
