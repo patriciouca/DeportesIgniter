@@ -9,7 +9,9 @@ class Administrador extends CI_Controller {
          $this->load->library(array('session'));
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
+         $this->load->database();
          $this->load->model('pista_model');
+         $this->load->model('login_model');
      }
 
      public function comprobar()
@@ -25,15 +27,20 @@ class Administrador extends CI_Controller {
      public function index()
      {
 
-             $data['titulo'] = 'Bienvenido Administrador';
+             $data['titulo'] = 'Bienvenido Admin';
+             $data['tipoPistas'] = $this->pista_model->selectTipoPista();
+
+
              $this->load->view('admin/header',$data);
              $this->load->view('admin/index',$data);
      }
 
+     /*
      public function gestionar(){
          $data['titulo'] = 'Gestionar';
          echo $this->pista_model->getTipoPistas();
          $this->load->view('admin/header',$data);
          $this->load->view('admin/gestionar',$data);
      }
+     */
 }
