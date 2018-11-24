@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php
 
                     // Open form and set URL for submit form
-                    echo form_open(base_url().'administrador/dataSubmitted');
+                    echo form_open(base_url().'administrador/gestionar');
 
                     // Show Name Field in View Page
                     echo form_label('Nombre pista ', 'nPista');
@@ -48,6 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div id="form_button">
                     <?php
                     $data = array(
+                        'name' => 'envPista',
                         'type' => 'submit',
                         'value'=> 'Enviar',
                         'class'=> 'submit'
@@ -78,7 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php
 
                 // Open form and set URL for submit form
-                echo form_open('Administrador/dataSubmitted');
+                echo form_open('Administrador/gestionar');
 
                 // Show Name Field in View Page
                 echo form_label('Nombre tipo pista ', 'nTipoPista');
@@ -97,6 +98,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div id="form_button">
                 <?php
                 $data = array(
+                        'name' => 'envTipoPista',
                     'type' => 'submit',
                     'value'=> 'Enviar',
                     'class'=> 'submit'

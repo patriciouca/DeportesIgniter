@@ -41,14 +41,23 @@ class Administrador extends CI_Controller {
              $this->load->view('admin/index',$data);
      }
 
-    public function dataSubmitted(){
-        $dataPista = array('idTipoPista' => $this->input->post('nTipoPista'),
-            'nombre' => $this->input->post('nPista'),
-        );
-        $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
+    public function gestionar(){
 
-        $this->pista_model->insertTipoPista($dataTipoPista);
-
+         if($this->input->post('envTipoPista') != null )
+         {
+             $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
+             $this->pista_model->insertTipoPista($dataTipoPista);
+             $this->index();
+         }
+         else if($this->input->post('envPista') != null)
+         {
+             $dataPista = array(
+                 'idTipoPista' => $this->input->post('tipo_pista'),
+                 'nombre' => $this->input->post('nPista'),
+             );
+             $this->pista_model->insertPista($dataPista);
+             $this->index();
+         }
     }
      /*
      public function gestionar(){
