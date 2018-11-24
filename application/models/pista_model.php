@@ -14,10 +14,15 @@ class Pista_model extends CI_Model {
         $this->db->insert('pista', $idPista,$nombre);
 
     }
-   public function selectTipoPista(){
-       $query = $this->db->query('SELECT * FROM tipopista');
+   public function getIdTipopista($tipo){
+       $query = $this->db->query("SELECT id FROM tipopista WHERE nombre=$tipo");
        return $query->result();
    }
+
+    public function selectTipoPista(){
+        $query = $this->db->query('SELECT * FROM tipopista');
+        return $query->result();
+    }
 
    public function insertTipoPista($data){
        $this->db->insert('tipopista', $data);

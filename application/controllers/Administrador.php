@@ -28,23 +28,28 @@ class Administrador extends CI_Controller {
      {
 
              $data['titulo'] = 'Bienvenido Admin';
-             $data['tipoPistas'] = $this->pista_model->selectTipoPista();
+             $tipoPistas = $this->pista_model->selectTipoPista();
+
+
+             foreach ($tipoPistas as $tipoPista)
+             {
+                 $data['tipoPistas'][$tipoPista->id]=$tipoPista->nombre;
+             }
 
 
              $this->load->view('admin/header',$data);
              $this->load->view('admin/index',$data);
      }
 
-     public function dataSubmitted(){
-
-         $dataPista = array('idTipoPista' => $this->input->post('nTipoPista'),
-             'nombre' => $this->input->post('nPista'),
-
-         );
+    public function dataSubmitted(){
+        $dataPista = array('idTipoPista' => $this->input->post('nTipoPista'),
+            'nombre' => $this->input->post('nPista'),
+        );
         $dataTipoPista = array('nombre' => $this->input->post('nTipoPista'));
-        $this->pista_model->insertTipoPista($dataTipoPista);
-     }
 
+        $this->pista_model->insertTipoPista($dataTipoPista);
+
+    }
      /*
      public function gestionar(){
          $data['titulo'] = 'Gestionar';

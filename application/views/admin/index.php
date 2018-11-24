@@ -27,15 +27,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         'class' => 'input_box'
                     );
                     echo form_input($data);
+
                     echo "<br>";
                     ?>
-                    <?php echo form_label('Tipo pista '); ?>
-                    <select name="tipoPista">
-                        <option value="none" selected="selected">------------Elije un tipo de pista------------</option>
-                        <?php foreach($tipoPistas as $row): ?>
-                            <option value="<?php echo $row->id?>"><?php echo $row->nombre?></option>
-                        <?php endforeach;?>
-                    </select>
+
+                    <?php
+                    $data= array(
+                        'name' => 'tipo_pista'
+                    );
+
+                    echo form_label('Tipo pista '); ?>
+
+                    <?php echo form_dropdown($data,$tipoPistas,'large'); ?>
 
 
 
