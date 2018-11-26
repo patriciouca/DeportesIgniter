@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php
 
                     // Open form and set URL for submit form
-                    echo form_open(base_url().'administrador/gestionar');
+                    echo form_open('Administrador/gestionar');
 
                     // Show Name Field in View Page
                     echo form_label('Nombre pista ', 'nPista');

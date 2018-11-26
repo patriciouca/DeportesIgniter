@@ -5,18 +5,34 @@ class Pista_model extends CI_Model {
       $this->load->database();
    }
 
-    public function selectPista(){
-        $query = $this->db->query('SELECT * FROM pista');
+    public function selectPista($where=null){
+
+        $this->db->from('pista');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
         return $query->result();
     }
 
-   public function getIdTipopista($tipo){
-       $query = $this->db->query("SELECT id FROM tipopista WHERE nombre=$tipo");
-       return $query->result();
-   }
+    public function selectTipoPista($where=null){
+        $this->db->from('tipopista');
 
-    public function selectTipoPista(){
-        $query = $this->db->query('SELECT * FROM tipopista');
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
         return $query->result();
     }
 
