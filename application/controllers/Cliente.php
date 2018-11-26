@@ -7,10 +7,10 @@ class Cliente extends CI_Controller {
          parent::__construct();
          $this->comprobar();
          $this->load->library(array('session'));
-         $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
          $this->load->database('default');
          $this->load->model('pista_model');
+         $this->load->model('alquiler_model');
      }
 
      public function comprobar()
@@ -48,6 +48,13 @@ class Cliente extends CI_Controller {
 
          $this->load->view('cliente/header',$data);
          $this->load->view('cliente/pista', $pista);
+     }
+
+     public function disponibilidad($fecha)
+     {
+         $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."'");
+
+         return $alquileres;
      }
 
 

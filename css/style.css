@@ -51,10 +51,9 @@ body#LoginForm{ background-image:url("../images/pabellon.jpg"); background-repea
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
 
-
-input [type="date"] {
-  font-family:  sans-serif;
-  font-size: 1.2rem;
+input[type="date"] {
+  font-family: sans-serif;
+  font-size: 5rem;
   display: block;
   padding: 0.5rem 1rem;
 }
