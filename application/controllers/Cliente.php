@@ -10,6 +10,7 @@ class Cliente extends CI_Controller {
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
          $this->load->database('default');
+         $this->load->model('pista_model');
      }
 
      public function comprobar()
@@ -37,6 +38,17 @@ class Cliente extends CI_Controller {
          $this->load->view('cliente/index',$data);
      }
 
+     public function pista($id)
+     {
+         $data['titulo'] = 'Pista';
+         $pistaModelo=($this->pista_model->selectPista("id='".$id."'"))[0];
+
+         $pista=array("pista" => $pistaModelo, "tipoPista" =>
+             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'"))[0]);
+
+         $this->load->view('cliente/header',$data);
+         $this->load->view('cliente/pista', $pista);
+     }
 
 
 }
