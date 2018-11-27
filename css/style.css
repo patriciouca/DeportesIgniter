@@ -50,3 +50,21 @@ body#LoginForm{ background-image:url("../images/pabellon.jpg"); background-repea
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+input[type="date"] {
+  font-family: sans-serif;
+  font-size: 2rem;
+  display: inline;
+  padding: 0.5rem 1rem;
+}
+
+#fechas{
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+#fechas li{
+  display: inline;
+  padding: 2px;
+}
