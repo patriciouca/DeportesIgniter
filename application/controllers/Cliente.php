@@ -53,8 +53,9 @@ class Cliente extends CI_Controller {
      public function disponibilidad($fecha)
      {
          $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."'");
-
-         return $alquileres;
+         $response['success'] = 1;
+         header('Content-Type: application/json');
+         echo json_encode($alquileres);
      }
 
 

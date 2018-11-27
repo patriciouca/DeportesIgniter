@@ -17,7 +17,7 @@ class Alquiler_model extends CI_Model {
 
         $this->db->where($where,null,false);
         $query = $this->db->get();
-        
+
         return $query->result();
 
     }

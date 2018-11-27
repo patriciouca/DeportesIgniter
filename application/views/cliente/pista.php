@@ -27,20 +27,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <br>
     <input id="calendario" type="date" name="fecha" value="<?= $fecha_actual ?>" min="<?= $fecha_actual ?>" max="<?= $semSig ?>">
     <button id="buscar" type="button" class="btn btn-primary">Buscar</button>
+    <ul id="fechas">
+        
+    </ul>
  </div>
 
 
 <script>
+    var almacenar;
     var calendario=$('#calendario').val();
     var url=<?= "'".base_url()."cliente/disponibilidad/'" ?>;
+    
+    $( document ).ready(function() {
+        peticionGet();
+    });
 
     $('#buscar').on( "click", function() {
-        $.get(url+calendario, function( data ) {
-            console.log(data);
-            alert(data);
-        });
-
+        if(almacenar!=calendario)
+        {
+            peticionGet();
+        }
     });
+    
+    function mostrarDia(fecha) {
+        var i=0;
+        for (;i<24;i++)
+        {
+            $('#fechas').append("<li>"+formatoHora(i)+"</li>");
+        }
+    }
+    
+    function peticionGet() {
+        $.get(url+calendario, function( data ) {
+            mostrarDia(data);
+            almacenar=calendario;
+        });
+    }
+
+    function formatoHora(hora) {
+        var digitos=hora.length;
+    }
 
 </script>
 </body>
