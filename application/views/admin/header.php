@@ -21,6 +21,9 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="<?php echo base_url().'administrador/gestionar' ?>">Gestionar <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?php echo base_url().'administrador/alquileres' ?>">Listado de alquileres <span class="sr-only">(current)</span></a>
+                </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

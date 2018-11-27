@@ -7,10 +7,13 @@ class Cliente extends CI_Controller {
          parent::__construct();
          $this->comprobar();
          $this->load->library(array('session'));
+         $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
          $this->load->database('default');
+         $this->load->model('usuario_model');
          $this->load->model('pista_model');
          $this->load->model('alquiler_model');
+         $this->load->model('login_model');
      }
 
      public function comprobar()
@@ -38,25 +41,34 @@ class Cliente extends CI_Controller {
          $this->load->view('cliente/index',$data);
      }
 
-     public function pista($id)
-     {
-         $data['titulo'] = 'Pista';
-         $pistaModelo=($this->pista_model->selectPista("id='".$id."'"))[0];
+    public function alquileresUsuario(){
+        $this->load->view('alquiler/header');
+        $data = $this->alquiler_model->selectAlquiler("idUsuario="."'"."2"."'");
+        $rowUser = $this->usuario_model->selectUsuario("id="."'"."2"."'");
+        foreach ($rowUser as $usuario)
+            $nombreUsuario = $usuario->nombre;
+        $alquileres = Array();
+        foreach ($data as $row){
+            $rowPista = $this->pista_model->selectPista("id=".$row->idPista);
+            foreach($rowPista as $pista)
+                $nombrePista = $pista->nombre;
 
-         $pista=array("pista" => $pistaModelo, "tipoPista" =>
-             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'"))[0]);
+            array_push($alquileres,
+                array(
+                    $row->id,
+                    $row->fecha,
+                    $nombrePista,
+                    $row->horaInicio,
+                    $row->horaFin,
+                    $row->precio."€",
+                    $nombreUsuario
+                )
+            );
+        }
+        $datos['alquileres'] = $alquileres;
+        $this->load->view('alquilerUsuario/index',$datos);
+    }
 
-         $this->load->view('cliente/header',$data);
-         $this->load->view('cliente/pista', $pista);
-     }
-
-     public function disponibilidad($fecha)
-     {
-         $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."'");
-         $response['success'] = 1;
-         header('Content-Type: application/json');
-         echo json_encode($alquileres);
-     }
 
 
 }
