@@ -10,7 +10,9 @@ class Administrador extends CI_Controller {
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
          $this->load->database('default');
+         $this->load->model('usuario_model');
          $this->load->model('pista_model');
+         $this->load->model('alquiler_model');
          $this->load->model('login_model');
      }
 
@@ -81,4 +83,53 @@ class Administrador extends CI_Controller {
          $this->load->view('admin/gestionar',$data);
      }
      */
+
+    /*ALQUILER*/
+    public function alquileres(){
+        $this->load->view('alquiler/header');
+
+        if(is_null($this->input->post('filtroFechaInicio')))
+            $data = $this->alquiler_model->selectAlquiler();
+        else{
+            $where = $this->filtrarAlquiler($this->input->post('filtroFechaInicio'));
+            $data = $this->alquiler_model->selectAlquiler($where);
+        }
+
+        $alquileres = Array();
+        foreach ($data as $row){
+            $rowPista = $this->pista_model->selectPista("id=".$row->idPista);
+            $rowUsuario = $this->usuario_model->selectUsuario("id=".$row->idUsuario);
+            foreach($rowPista as $pista)
+                $nombrePista = $pista->nombre;
+            foreach($rowUsuario as $usuario)
+                $nombreUsuario = $usuario->nombre;
+
+            array_push($alquileres,
+                array(
+                    $row->id,
+                    $row->fecha,
+                    $nombrePista,
+                    $row->horaInicio,
+                    $row->horaFin,
+                    $row->precio."€",
+                    $nombreUsuario
+                )
+            );
+        }
+        $datos['alquileres'] = $alquileres;
+        $this->load->view('alquiler/index',$datos);
+
+    }
+
+    public function filtrarAlquiler($fechaInicio){
+
+        $where = null;
+        if($fechaInicio != null )
+            $where = "fecha>="."'".$this->input->post('filtroFechaInicio')."'";
+
+        return $where;
+
+    }
+
+
 }

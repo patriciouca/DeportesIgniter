@@ -13,17 +13,21 @@ class Alquiler_model extends CI_Model {
             $query = $this->db->get();
             return $query->result();
 
+        }else{
+
+            $this->db->where($where,null,false);
+            $query = $this->db->get();
+            return $query->result();
+
         }
 
-        $this->db->where($where,null,false);
-        $query = $this->db->get();
-        return $query->result();
+
 
     }
 
     public function insertAlquiler($data){
-        $this->db->insert('alquiler', $data);
 
+        $this->db->insert('alquiler', $data);
 
     }
 
