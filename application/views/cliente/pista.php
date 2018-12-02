@@ -34,7 +34,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     $data= array(
         'id'=> 'pista',
         'name' => 'pista',
-        'class' => 'input_box',
+        'class' => 'd-none',
         'type' =>'text',
         'value'=> $pista->id
     );
@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     $data= array(
             'id'=> 'decision',
         'name' => 'hora',
-        'class' => 'input_box',
+        'class' => 'd-none',
         'type' =>'text'
     );
     echo form_input($data);
@@ -61,6 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 <script>
+
     var almacenar;
     var calendario=$('#calendario').val();
     var url=<?= "'".base_url()."cliente/disponibilidad/'" ?>;
@@ -100,6 +101,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     function mostrarDia(fecha) {
         var i=0;
+
+        var d = new Date();
+
+        if($('#calendario').val()==d.toISOString().substring(0,d.toISOString().indexOf("T")))
+            i=d.getHours();
+
         $('#fechas').html("");
         var dia=diaSemana();
         var horaIni1,horaIni2,horaFin1,horaFin2;

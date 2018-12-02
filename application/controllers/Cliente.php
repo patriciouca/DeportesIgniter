@@ -63,7 +63,7 @@ class Cliente extends CI_Controller {
 
      public function disponibilidad($fecha)
      {
-         $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."' order by horaInicio asc");
+         $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."' order by horaInicio asc")[0];
          $response['success'] = 1;
          header('Content-Type: application/json');
          header('Access-Control-Allow-Origin: *');
