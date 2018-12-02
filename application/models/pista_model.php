@@ -50,4 +50,14 @@ class Pista_model extends CI_Model {
        $this->db->insert('tipopista', $data);
    }
 
+    public function horario($dia)
+    {
+        $this->db->from('horario');
+
+
+        $this->db->where("dia='".$dia."'", null, false);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

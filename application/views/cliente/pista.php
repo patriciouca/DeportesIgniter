@@ -20,6 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     $fecha->add(new DateInterval('P7D'));
     $semSig= $fecha->format('Y-m-d');
+    echo form_open('Cliente/alquilar');
     ?>
     <br>
     <input id="calendario" type="date" name="fecha" value="<?= $fecha_actual ?>" min="<?= $fecha_actual ?>" max="<?= $semSig ?>">
@@ -29,11 +30,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </ul>
 
     <?php
-    echo form_open('Cliente/alquilar');
+
+    $data= array(
+        'id'=> 'pista',
+        'name' => 'pista',
+        'class' => 'input_box',
+        'type' =>'text',
+        'value'=> $pista->id
+    );
+    echo form_input($data);
 
     $data= array(
             'id'=> 'decision',
-        'name' => 'fecha',
+        'name' => 'hora',
         'class' => 'input_box',
         'type' =>'text'
     );
@@ -85,24 +94,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     }
 
+    function convertirHoraEnNumero(hora){
+        return parseInt((hora.substring(0, 5)).replace(':',''));
+    }
+
     function mostrarDia(fecha) {
         var i=0;
         $('#fechas').html("");
         var dia=diaSemana();
         var horaIni1,horaIni2,horaFin1,horaFin2;
+        var contarM,contarT;
 
         $.get(url2+dia, function( data ) {
-           horaIni1=data.horaInicioM;
-           horaIni2=data.horaInicioT;
-           horaFin1=data.horaFinM;
-           horaFin2=data.horaFinT;
 
+           horaIni1=convertirHoraEnNumero(data.horaInicioM);
+           horaIni2=convertirHoraEnNumero(data.horaInicioT);
+           horaFin1=convertirHoraEnNumero(data.horaFinM);
+           horaFin2=convertirHoraEnNumero(data.horaFinT);
+            contarM=horaIni1==0?false:true;
+            contarT=horaIni2==0?false:true;
+
+           var hora;
             for (;i<24;i++)
             {
-                if(pillada(formatoHora(i),fecha))
-                    $('#fechas').append("<li class=\"bg-danger\">"+formatoHora(i)+"-"+formatoHora(i+1)+"</li>");
-                else
-                    $('#fechas').append("<li id=\""+formatoHora(i)+"\" class=\"clickable bg-success\">"+formatoHora(i)+"-"+formatoHora(i+1)+"</li>");
+                hora=convertirHoraEnNumero(formatoHora(i));
+                if ((hora >= horaIni1 && hora < horaFin1 && contarM) || (hora >= horaIni2 && hora < horaFin2 && contarT))
+                {
+                    if(pillada(formatoHora(i),fecha))
+                        $('#fechas').append("<li class=\"bg-danger\">"+formatoHora(i)+"-"+formatoHora(i+1)+"</li>");
+                    else
+                        $('#fechas').append("<li id=\""+formatoHora(i)+"\" class=\"clickable bg-success\">"+formatoHora(i)+"-"+formatoHora(i+1)+"</li>");
+
+                }
 
             }
         });
