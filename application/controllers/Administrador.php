@@ -49,6 +49,27 @@ class Administrador extends CI_Controller {
              $this->load->view('admin/index',$data);
      }
 
+    public function torneo($error=null)
+    {
+
+        $data['titulo'] = 'Bienvenido Admin';
+        $tipoPistas = $this->pista_model->selectTipoPista();
+
+
+        foreach ($tipoPistas as $tipoPista)
+        {
+            $data['tipoPistas'][$tipoPista->id]=$tipoPista->nombre;
+        }
+
+
+        $this->load->view('admin/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('admin/torneo',$data);
+    }
+
     public function gestionar(){
 
         try{
