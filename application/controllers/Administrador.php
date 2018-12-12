@@ -14,6 +14,7 @@ class Administrador extends CI_Controller {
          $this->load->model('pista_model');
          $this->load->model('alquiler_model');
          $this->load->model('login_model');
+         $this->load->model('torneo_model');
      }
 
      public function comprobar()
@@ -53,12 +54,12 @@ class Administrador extends CI_Controller {
     {
 
         $data['titulo'] = 'Bienvenido Admin';
-        $tipoPistas = $this->pista_model->selectTipoPista();
+        $torneos = $this->torneo_model->selectTorneo();
 
 
-        foreach ($tipoPistas as $tipoPista)
+        foreach ($torneos as $torneo)
         {
-            $data['tipoPistas'][$tipoPista->id]=$tipoPista->nombre;
+            $data['torneos'][$torneo->id]=$torneo->nombre;
         }
 
 
@@ -96,14 +97,31 @@ class Administrador extends CI_Controller {
             $this->index($e->getMessage());
         }
     }
-     /*
-     public function gestionar(){
-         $data['titulo'] = 'Gestionar';
-         echo $this->pista_model->getTipoPistas();
-         $this->load->view('admin/header',$data);
-         $this->load->view('admin/gestionar',$data);
-     }
-     */
+
+
+    public function gestionarTorneo(){
+
+        try{
+            if($this->input->post('envTorneo') != null )
+            {
+                $dataTipoTorneo = array('nombre' => $this->input->post('nTorneo'));
+                $this->torneo_model->insertTorneo($dataTipoTorneo);
+                $this->torneo();
+            }
+            else if($this->input->post('envEquipo') != null)
+            {
+                $dataTipoEquipo = array('nombre' => $this->input->post('nEquipo'),'idTorneo' => $this->input->post('tipo_pista'));
+
+                $this->torneo_model->insertEquipo($dataTipoEquipo);
+                $this->torneo();
+
+
+            }
+        }catch (Exception $e)
+        {
+            $this->torneo($e->getMessage());
+        }
+    }
 
     /*ALQUILER*/
     public function alquileres(){
