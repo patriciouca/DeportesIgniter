@@ -164,10 +164,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <?php echo form_close();?>
                             </div></div></div>  </div>
 
+        <div class="col-md-8 ">
+            <div class="card mb-4 ">
+                <h3>Generar encuentros</h3>
+                <div class="card-body">
+                    <div class=" justify-content-between align-items-center">
+                        <div id="form_input">
+                            <?php
+
+                            // Open form and set URL for submit form
+                            echo form_open('Administrador/gestionarTorneo');
 
 
 
-    </div>
+                            ?>
+                        </div>
+                        <div id="form_button">
+                            <?php
+                            $data= array(
+                                'name' => 'torneo'
+                            );
+
+                            echo form_label('Torneo'); ?>
+                            <?php echo form_dropdown($data,$torneos,'large'); ?>
+                        </div>
+                        <div id="form_button">
+                            <?php
+                            $data = array(
+                                'name' => 'envEncuentros',
+                                'type' => 'submit',
+                                'value'=> 'Crear',
+                                'class'=> 'submit'
+                            );
+                            echo form_submit($data); ?>
+                        </div>
+                        <?php echo form_close();?>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+</div>
 
 <script>
 

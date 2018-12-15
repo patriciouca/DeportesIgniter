@@ -123,8 +123,11 @@ class Administrador extends CI_Controller {
                     $usuario->nombre,'apellidos'=>$usuario->apellidos);
                 $this->torneo_model->insertIntegrante($dataTipoEquipo);
                 $this->torneo();
-
-
+            }
+            else if($this->input->post('envEncuentros') != null)
+            {
+                $this->torneo_model->generarEncuentros($this->input->post('torneo'));
+                $this->torneo();
             }
         }catch (Exception $e)
         {
