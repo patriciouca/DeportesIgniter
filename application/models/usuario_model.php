@@ -29,4 +29,12 @@ class Usuario_model extends CI_Model {
 
     }
 
+
+    public function insert($data){
+
+        $this->db->insert('usuario', $data);
+
+    }
+
+
 }

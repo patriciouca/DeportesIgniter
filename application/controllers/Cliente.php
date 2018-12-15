@@ -11,6 +11,7 @@ class Cliente extends CI_Controller {
          $this->load->database('default');
          $this->load->model('pista_model');
          $this->load->model('alquiler_model');
+         $this->load->model('usuario_model');
      }
 
      public function comprobar()
@@ -52,10 +53,10 @@ class Cliente extends CI_Controller {
      public function pista($id)
      {
          $data['titulo'] = 'Pista';
-         $pistaModelo=($this->pista_model->selectPista("id='".$id."'"))[0];
+         $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"));
 
          $pista=array("pista" => $pistaModelo, "tipoPista" =>
-             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'"))[0]);
+             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'")));
 
          $this->load->view('cliente/header',$data);
          $this->load->view('cliente/pista', $pista);
@@ -63,7 +64,7 @@ class Cliente extends CI_Controller {
 
      public function disponibilidad($fecha)
      {
-         $alquileres=$this->alquiler_model->selectAlquiler("fecha='".$fecha."' order by horaInicio asc")[0];
+         $alquileres = $this->alquiler_model->selectAlquiler("fecha='".$fecha."' order by horaInicio asc");
          $response['success'] = 1;
          header('Content-Type: application/json');
          header('Access-Control-Allow-Origin: *');
@@ -73,12 +74,67 @@ class Cliente extends CI_Controller {
 
     public function horario($dia)
     {
-        $horario = $this->pista_model->horario($dia)[0];
+        $horario = $this->pista_model->horario($dia);
         $response['success'] = 1;
         header('Content-Type: application/json');
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Methods: GET, OPTIONS");
         echo json_encode($horario);
+    }
+
+    public function alquileres(){
+        $this->load->view('cliente/header');
+
+        if(is_null($this->input->post('filtroFechaInicio')))
+            $data = $this->alquiler_model->selectAlquiler();
+        else{
+            $where = $this->filtrarAlquiler($this->input->post('filtroFechaInicio'));
+            $data = $this->alquiler_model->selectAlquiler($where);
+        }
+
+        $alquileres = Array();
+        foreach ($data as $row){
+            $rowPista = $this->pista_model->selectPista("id=".$row->idPista);
+            $rowUsuario = $this->usuario_model->selectUsuario("id=".$row->idUsuario);
+            foreach($rowPista as $pista)
+                $nombrePista = $pista->nombre;
+            foreach($rowUsuario as $usuario)
+                $nombreUsuario = $usuario->nombre;
+
+            array_push($alquileres,
+                array(
+                    $row->id,
+                    $row->fecha,
+                    $nombrePista,
+                    $row->horaInicio,
+                    $row->precio."€",
+                    $nombreUsuario
+                )
+            );
+        }
+        $datos['alquileres'] = $alquileres;
+        $this->load->view('cliente/alquiler',$datos);
+
+    }
+
+    public function filtrarAlquiler($fechaInicio){
+
+        $where = null;
+        if($fechaInicio != null )
+            $where = "fecha>="."'".$this->input->post('filtroFechaInicio')."'";
+
+        return $where;
+
+    }
+
+    public function misDatos(){
+        $this->load->view('cliente/header');
+        $datos['nombre'] = 'aaron';
+        $datos['apellidos'] = 'salinas sanchez';
+        $datos['email'] = 'aron.salinas@gmail.com';
+        $datos['tarjeta'] = '49120401lk';
+
+        $this->load->view('cliente/cuenta',$datos);
     }
 
 }

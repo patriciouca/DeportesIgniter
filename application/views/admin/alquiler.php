@@ -5,7 +5,37 @@
 <br/>
 <br/>
 
+<div class="container">
+    <div class="row">
+            <div id="form_input">
+                <?=  form_open('Administrador/alquileres'); ?>
+                <?php
 
+
+                echo form_label('Fecha inicio ', 'filtroFechaInicio');
+                $data= array(
+                    'name' => 'filtroFechaInicio',
+                    'class' => 'input_box'
+                );
+                echo form_input($data);
+                echo "<br>";
+                ?>
+
+            </div>
+            <div id="form_button">
+                <?php
+                $data = array(
+                    'name' => 'envPista',
+                    'type' => 'submit',
+                    'value'=> 'Filtrar',
+                    'class'=> 'submit'
+                );
+                echo form_submit($data); ?>
+            </div>
+            <?= form_close(); ?>
+
+    </div>
+</div>
 <br/>
 <table class="table">
     <thead class="thead-dark">
@@ -14,7 +44,6 @@
         <th scope="col">Fecha</th>
         <th scope="col">Pista</th>
         <th scope="col">Hora inicio</th>
-        <th scope="col">Hora fin</th>
         <th scope="col">Precio</th>
         <th scope="col">Nombre de usuario</th>
 
@@ -30,7 +59,6 @@
             echo "<td>$alquiler[3]</td>";
             echo "<td>$alquiler[4]</td>";
             echo "<td>$alquiler[5]</td>";
-            echo "<td>$alquiler[6]</td>";
             echo "</tr>";
         }
 
