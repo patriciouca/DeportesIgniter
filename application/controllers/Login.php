@@ -62,7 +62,8 @@ class Login extends CI_Controller {
 			             );
 
 			 $this->session->set_userdata($data);
-			 $this->index();
+			 $this->load->view('admin/header');
+			 $this->load->view('admin/index');
 		 }else{
 		     $this->index();
 		 }
@@ -81,5 +82,24 @@ class Login extends CI_Controller {
 		 $this->session->sess_destroy();
 		 $this->index();
 	 }
+
+	 public function registro(){
+         $this->load->view('header');
+         $this->load->view('registro');
+
+     }
+
+     public function registrarUsuario(){
+         $usuario['id_tipo'] = '1';
+         $usuario['nombre'] = $this->input->post('nombre');
+         $usuario['apellidos'] = $this->input->post('apellidos');
+         $usuario['dni'] = $this->input->post('dni');
+         $usuario['telefono'] = $this->input->post('telefono');
+         $usuario['tarjetaCredito'] = $this->input->post('tarjeta');
+         $usuario['usuario'] = $this->input->post('username');
+         $usuario['password'] = $this->input->post('password');
+         $this->usuario_model->insert($usuario);
+
+     }
 
 }

@@ -124,7 +124,7 @@ class Administrador extends CI_Controller {
 
     /*ALQUILER*/
     public function alquileres(){
-        $this->load->view('alquiler/header');
+        $this->load->view('admin/header');
 
         if(is_null($this->input->post('filtroFechaInicio')))
             $data = $this->alquiler_model->selectAlquiler();
@@ -148,14 +148,13 @@ class Administrador extends CI_Controller {
                     $row->fecha,
                     $nombrePista,
                     $row->horaInicio,
-                    $row->horaFin,
                     $row->precio."€",
                     $nombreUsuario
                 )
             );
         }
         $datos['alquileres'] = $alquileres;
-        $this->load->view('alquiler/index',$datos);
+        $this->load->view('admin/alquiler',$datos);
 
     }
 
