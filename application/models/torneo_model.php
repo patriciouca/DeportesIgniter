@@ -35,6 +35,12 @@ class Torneo_model extends CI_Model {
        $this->db->insert('equipo', $data);
    }
 
+    public function insertIntegrante($data){
+        if($data['nombre']== null || $data['apellidos'] == "")
+            throw new Exception("No se puede crear un integrante sin nombre o apellidos");
+        $this->db->insert('integrante', $data);
+    }
+
     public function selectEquipos($where=null){
 
         $this->db->from('equipo');

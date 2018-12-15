@@ -6,9 +6,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <div class="container">
     <h1><?= $titulo ?></h1>
- </div>
 
-    <div class="col-md-6 ">
+
+    <div class="col-md-8 ">
         <div class="card mb-4 ">
             <h3>Crear Torneo</h3>
             <div class="card-body">
@@ -45,9 +45,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
                 <?php echo form_close();?>
-                </div></div></div>
+                </div></div></div></div>
 
-
+        <div class="col-md-8 ">
                 <div class="card mb-4 ">
                     <h3>Crear Equipo</h3>
                     <div class="card-body">
@@ -96,13 +96,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                 </div>
 
-                <div class="col-md-6 ">
+
+
+
+                <div class="col-md-8 ">
                     <div class="card mb-4 ">
                         <h3>Añadir Integrante</h3>
                         <div class="card-body">
                             <div class=" justify-content-between align-items-center">
                                 <div id="form_button">
                                     <?php
+
+                                // Open form and set URL for submit form
+                                echo form_open('Administrador/gestionarTorneo');
+
                                     $data= array(
                                             'id'=>'torneo',
                                         'name' => 'nTorneo'
@@ -115,13 +122,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div id="form_button">
                                     <?php
                                     $data= array(
+                                            'id'=>'equipo',
                                         'name' => 'equipo',
-                                        'disabled' => 'disabled'
+                                        'disabled' => 'disabled',
                                     );
 
                                     echo form_label('Equipo'); ?>
                                     <?php echo form_dropdown($data,$torneos,'large'); ?>
                                 </div>
+
+                                <div id="form_input">
+                                    <?php
+
+                                    // Show Name Field in View Page
+                                    echo form_label('Correo ');
+                                    $data= array(
+                                        'name' => 'nUsuario',
+                                        'placeholder' => 'Introduzca el email del usuario',
+                                        'class' => 'input_box'
+                                    );
+                                    echo form_input($data);
+
+
+                                    ?>
+                                </div>
+
+
 
                                 <div id="form_button">
                                     <?php
@@ -136,7 +162,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
                                 <?php echo form_close();?>
-                            </div></div></div>
+                            </div></div></div>  </div>
 
 
 
@@ -148,16 +174,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     var url=<?= "'".base_url()."administrador/getEquipos/'" ?>;
     var valor;
 
+    $( document ).ready(function() {
+        peticionGet();
+    });
+
     $('#torneo').change(function(a) {
-       valor=$('#torneo').val();
-        alert(valor);
+
+       peticionGet();
     });
 
 
     function peticionGet() {
-
+        valor=$('#torneo').val();
         $.get(url+valor, function( data ) {
-            console.log(data);
+            $( "#equipo" ).prop( "disabled", false );
+            $( "#equipo" ).html(" ");
+            for (var i=0;i<data.length;i++)
+            {
+                $( "#equipo" ).append("<option value='"+data[i].id+"'>"+data[i].nombre+"</option>");
+            }
         });
 
     }

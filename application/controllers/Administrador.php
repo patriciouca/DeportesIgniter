@@ -116,6 +116,16 @@ class Administrador extends CI_Controller {
 
 
             }
+            else if($this->input->post('envIntegrante') != null)
+            {
+                $usuario=($this->usuario_model->selectUsuario("correo='".$this->input->post('nUsuario')."'"))[0];
+                $dataTipoEquipo = array('id_equipo' => $this->input->post('equipo'),'id_usuario' => $usuario->id,'nombre'=>
+                    $usuario->nombre,'apellidos'=>$usuario->apellidos);
+                $this->torneo_model->insertIntegrante($dataTipoEquipo);
+                $this->torneo();
+
+
+            }
         }catch (Exception $e)
         {
             $this->torneo($e->getMessage());

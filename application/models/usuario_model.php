@@ -29,6 +29,22 @@ class Usuario_model extends CI_Model {
 
     }
 
+    public function selectUsuarioID($where=null){
+
+        $this->db->from('usuario');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where("where correo='".$where."'",null,false);
+        $query = $this->db->get();
+        return $query->result();
+
+    }
 
     public function insert($data){
 
