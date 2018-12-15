@@ -98,6 +98,33 @@ class Administrador extends CI_Controller {
         }
     }
 
+    public function verTorneo($error=null)
+    {
+
+
+        $data['titulo'] = 'Bienvenido Admin';
+
+        $encuentros=$this->torneo_model->selectEncuentros(1);
+
+        foreach ($encuentros as $encuentro)
+        {
+
+            $encuentro->equipo1=($this->torneo_model->selectEquipos("id='".
+                $encuentro->id_equipo1."'"))[0]->nombre;
+
+            $encuentro->equipo2=($this->torneo_model->selectEquipos("id='".
+                $encuentro->id_equipo2."'"))[0]->nombre;
+
+        }
+
+        $data['encuentros'] = $encuentros;
+        $this->load->view('admin/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+       // $this->load->view('verTorneo',$data);
+    }
 
     public function gestionarTorneo(){
 

@@ -48,6 +48,7 @@ class Torneo_model extends CI_Model {
     public function seleccionarNumeros($equipos){
        $cantidad=count($equipos);
        $seleccionados=array();
+
        for ($i=0;$i<$cantidad;$i++)
         {
             $valor=rand(0,$cantidad-1);
@@ -59,9 +60,18 @@ class Torneo_model extends CI_Model {
 
 
             $seleccionados[$i]=$valor;
+            $tratado[$i]=$equipos[$valor]->id;
         }
-        return $seleccionados;
+        return $tratado;
 
+    }
+
+    public function selectEncuentros($id_torneo){
+        $this->db->from('encuentro');
+
+        $this->db->where("id_torneo='".$id_torneo."'",null,false);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function generarEncuentros($id){
