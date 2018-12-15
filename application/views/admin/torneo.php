@@ -193,7 +193,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             $data = array(
                                 'name' => 'envEncuentros',
                                 'type' => 'submit',
-                                'value'=> 'Crear',
+                                'value'=> 'Generar',
                                 'class'=> 'submit'
                             );
                             echo form_submit($data); ?>

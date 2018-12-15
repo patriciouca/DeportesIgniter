@@ -13,32 +13,63 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <h3>Crear Torneo</h3>
             <div class="card-body">
                 <div class=" justify-content-between align-items-center">
-
+                    <?php echo form_open('Administrador/ganador/'.$id_torneo); ?>
                     <table>
 
                         <?php
-                            $fase=-1;
+                            $encuentrosP=$encuentrosPfase;
+                            $suma=0;
+                            $fase=1;
                             foreach ($encuentros as $encuentro)
                             {
-                                if($encuentro->fase>$fase)
-                                {
+                                if($suma==0)
                                     echo "<tr>";
-                                }
 
                                 echo "<td>";
-                                echo $encuentro->equipo1."-";
-                                echo $encuentro->equipo2;
-                                echo "</td>";
-
-                                if($encuentro->fase>$fase)
+                                if($encuentro->ganador==1)
                                 {
-                                    echo "</tr>";
-                                    $fase++;
+                                    echo "<p class='bg-success'>".$encuentro->equipo1."</p> -";
+                                    echo "<p class='bg-danger'>".$encuentro->equipo2."</p>";
                                 }
+                                else if($encuentro->ganador==2)
+                                {
+                                    echo "<p class='bg-danger'>".$encuentro->equipo1."</p> -";
+                                    echo "<p class='bg-success'>".$encuentro->equipo2."</p>";
+                                }
+                                else{
+                                    echo "<p>".$encuentro->equipo1."</p> -";
+                                    echo "<p>".$encuentro->equipo2."</p>";
+                                }
+
+
+                                $data= array(
+                                    'name' => 'torneo'.$encuentro->id
+                                );
+                                $ganadores=array("1"=>$encuentro->equipo1,"2"=>$encuentro->equipo2);
+
+                                echo form_label('Ganador');
+                                echo form_dropdown($data,$ganadores,'large');
+                                $data = array(
+                                    'name' => 'envGanador'.$encuentro->id,
+                                    'type' => 'submit',
+                                    'value'=> 'Ganador',
+                                    'class'=> 'submit'
+                                );
+                                echo form_submit($data);
+                                echo "</td>";
+                                $suma++;
+                                if($suma==$encuentrosP/$fase)
+                                {
+                                    $suma=0;
+                                    echo "</tr>";
+                                }
+
+
                             }
                         ?>
 
                     </table>
+                    <?php echo form_close();?>
 
                 </div>
 

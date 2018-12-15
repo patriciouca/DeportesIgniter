@@ -98,13 +98,13 @@ class Administrador extends CI_Controller {
         }
     }
 
-    public function verTorneo($error=null)
+    public function verTorneo($id_torneo,$error=null)
     {
 
 
         $data['titulo'] = 'Bienvenido Admin';
-
-        $encuentros=$this->torneo_model->selectEncuentros(1);
+        $id_torneo=1;
+        $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
 
         foreach ($encuentros as $encuentro)
         {
@@ -118,12 +118,15 @@ class Administrador extends CI_Controller {
         }
 
         $data['encuentros'] = $encuentros;
+        $data['id_torneo'] = $id_torneo;
+
+        $data['encuentrosPfase'] = $this->torneo_model->encuentrosPrimeraFase($id_torneo);
         $this->load->view('admin/header',$data);
 
         if($error != null)
             $this->load->view('error',array('error'=>$error));
 
-       // $this->load->view('verTorneo',$data);
+        $this->load->view('verTorneo',$data);
     }
 
     public function gestionarTorneo(){
@@ -216,6 +219,26 @@ class Administrador extends CI_Controller {
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Methods: GET, OPTIONS");
         echo json_encode($equipos);
+    }
+
+    public function ganador($id_torneo){
+        $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
+        try{
+            foreach ($encuentros as $encuentro)
+            {
+                if($this->input->post('envGanador'.$encuentro->id)!=null)
+                {
+
+                    $this->torneo_model->setGanador($encuentro->id,$this->input->post('torneo'.$encuentro->id));
+                }
+            }
+            $this->verTorneo($id_torneo);
+        }catch (Exception $e)
+        {
+            $this->verTorneo($id_torneo,$e);
+        }
+
+
     }
 
 

@@ -66,12 +66,34 @@ class Torneo_model extends CI_Model {
 
     }
 
+    public function setGanador($id,$ganador)
+    {
+        if($id== null || $id == "")
+            throw new Exception("No hay id o ganador");
+
+        if($ganador != 1 && $ganador != 2)
+            throw new Exception("Solo puede ganar equipo 1 o 2");
+
+        
+        $this->db->set('ganador', $ganador);
+        $this->db->where('id', $id);
+        $this->db->update('encuentro');
+    }
+
     public function selectEncuentros($id_torneo){
         $this->db->from('encuentro');
 
         $this->db->where("id_torneo='".$id_torneo."'",null,false);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function encuentrosPrimeraFase($id_torneo){
+        $this->db->from('encuentro');
+
+        $this->db->where("fase=1 and id_torneo='".$id_torneo."'",null,false);
+        $query = $this->db->get();
+        return count($query->result());
     }
 
     public function generarEncuentros($id){
@@ -121,14 +143,7 @@ class Torneo_model extends CI_Model {
                 "fase"=>$max_fase+1,"ganador"=>0);
             $this->insertEncuentro($dataEncuentro);
         }
-        /*
 
-
-        $this->db->from('encuentro');
-
-        $this->db->where("id='".$id."'",null,false);
-        */
-        //$query = $this->db->get();
     }
 
     public function selectEquipos($where=null){
