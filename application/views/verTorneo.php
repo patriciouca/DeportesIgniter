@@ -58,9 +58,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 echo form_submit($data);
                                 echo "</td>";
                                 $suma++;
-                                if($suma==$encuentrosP/$fase)
+                                if($suma>=$encuentrosP/$fase)
                                 {
                                     $suma=0;
+                                    $fase++;
                                     echo "</tr>";
                                 }
 

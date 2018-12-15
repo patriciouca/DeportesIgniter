@@ -60,7 +60,10 @@ class Torneo_model extends CI_Model {
 
 
             $seleccionados[$i]=$valor;
-            $tratado[$i]=$equipos[$valor]->id;
+            if(isset($equipos[$valor]->id))
+                $tratado[$i]=$equipos[$valor]->id;
+            else
+                $tratado[$i]=$equipos[$valor];
         }
         return $tratado;
 
@@ -74,7 +77,7 @@ class Torneo_model extends CI_Model {
         if($ganador != 1 && $ganador != 2)
             throw new Exception("Solo puede ganar equipo 1 o 2");
 
-        
+
         $this->db->set('ganador', $ganador);
         $this->db->where('id', $id);
         $this->db->update('encuentro');
@@ -84,6 +87,7 @@ class Torneo_model extends CI_Model {
         $this->db->from('encuentro');
 
         $this->db->where("id_torneo='".$id_torneo."'",null,false);
+        //$this->db->order_by("id", "desc");
         $query = $this->db->get();
         return $query->result();
     }
@@ -93,6 +97,7 @@ class Torneo_model extends CI_Model {
 
         $this->db->where("fase=1 and id_torneo='".$id_torneo."'",null,false);
         $query = $this->db->get();
+
         return count($query->result());
     }
 
@@ -108,6 +113,7 @@ class Torneo_model extends CI_Model {
             $this->db->from('encuentro');
             $this->db->where("id_torneo='".$id."'","and fase='".$max_fase."'",false);
             $equiposMal  = $this->db->get()->result();
+
             $i=0;
 
             foreach ($equiposMal as $equipo)
@@ -118,11 +124,11 @@ class Torneo_model extends CI_Model {
                 }
                 else if($equipo->ganador==1)
                 {
-                    $equipos[$i]=$equiposMal->id_equipo1;
+                    $equipos[$i]=$equipo->id_equipo1;
                 }
                 else if($equipo->ganador==2)
                 {
-                    $equipos[$i]=$equiposMal->id_equipo1;
+                    $equipos[$i]=$equipo->id_equipo2;
                 }
 
                 $i++;

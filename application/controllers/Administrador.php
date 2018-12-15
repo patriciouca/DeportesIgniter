@@ -103,7 +103,6 @@ class Administrador extends CI_Controller {
 
 
         $data['titulo'] = 'Bienvenido Admin';
-        $id_torneo=1;
         $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
 
         foreach ($encuentros as $encuentro)
