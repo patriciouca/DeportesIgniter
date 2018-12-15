@@ -53,7 +53,7 @@ class Administrador extends CI_Controller {
     public function torneo($error=null)
     {
 
-        $data['titulo'] = 'Bienvenido Admin';
+        $data['titulo'] = 'Torneo';
         $torneos = $this->torneo_model->selectTorneo();
 
 
@@ -110,8 +110,7 @@ class Administrador extends CI_Controller {
             }
             else if($this->input->post('envEquipo') != null)
             {
-                $dataTipoEquipo = array('nombre' => $this->input->post('nEquipo'),'idTorneo' => $this->input->post('tipo_pista'));
-
+                $dataTipoEquipo = array('nombre' => $this->input->post('nEquipo'),'id_torneo' => $this->input->post('torneo'));
                 $this->torneo_model->insertEquipo($dataTipoEquipo);
                 $this->torneo();
 
@@ -168,6 +167,16 @@ class Administrador extends CI_Controller {
 
         return $where;
 
+    }
+
+    public function getEquipos($torneo)
+    {
+        $equipos = $this->torneo_model->selectEquipos("id_torneo=".$torneo);
+        $response['success'] = 1;
+        header('Content-Type: application/json');
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Methods: GET, OPTIONS");
+        echo json_encode($equipos);
     }
 
 

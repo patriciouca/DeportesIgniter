@@ -35,5 +35,22 @@ class Torneo_model extends CI_Model {
        $this->db->insert('equipo', $data);
    }
 
+    public function selectEquipos($where=null){
+
+        $this->db->from('equipo');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+
 
 }
