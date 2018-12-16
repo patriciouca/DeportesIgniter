@@ -17,6 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             echo "<h3>$torneo->nombre</h3>";
             echo "<div class=\"card-body\">";
             echo "<div class=\" justify-content-between align-items-center\">";
+
             if($torneo->abierto)
                 echo  "Abierta la inscripcion";
             else if($torneo->finalizado)

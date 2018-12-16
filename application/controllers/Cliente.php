@@ -199,6 +199,8 @@ class Cliente extends CI_Controller {
         $datos['email'] = 'aron.salinas@gmail.com';
         $datos['tarjeta'] = '49120401lk';
 
+        $datos['torneos']=$this->torneo_model->selectMisTorneos($this->session->userdata('id_usuario'));
+
         $this->load->view('cliente/cuenta',$datos);
     }
 

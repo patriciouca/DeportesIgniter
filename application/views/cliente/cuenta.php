@@ -52,10 +52,24 @@
                                 </div>
                             </form>
                         </div>
+
                     </div>
 
                 </div>
             </div>
         </div>
+        <?php
+            if(isset($torneos))
+            {
+                echo '<div class="col-md-6 "><div class="card mb-6 "><h3>Mis Torneos</h3>';
+                echo '<div class="card-body"> <div class=" justify-content-between align-items-center"><div id="form_input">';
+                foreach ($torneos as $torneo)
+                {
+                    echo $torneo['nombre'];
+                    
+                }
+                echo '</div></div></div></div></div>';
+            }?>
+
     </div>
 </div>

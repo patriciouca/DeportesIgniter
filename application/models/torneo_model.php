@@ -21,6 +21,31 @@ class Torneo_model extends CI_Model {
         return $query->result();
     }
 
+    public function selectMisTorneos($id_usu){
+
+        $this->db->from('integrante');
+        $this->db->where("id_usuario='".$id_usu."'",null,false);
+        $query = $this->db->get();
+        $resultado=null;
+        $i=0;
+        foreach ($query->result() as $integrante)
+        {
+            $equipo=$integrante->id_equipo;
+
+            $this->db->from('equipo');
+            $this->db->where("id='".$equipo."'",null,false);
+            $query = $this->db->get();
+
+            $resultado[$i]['id']=($query->result())[0]->id_torneo;
+            $this->db->from('torneo');
+            $this->db->where("id='".($query->result())[0]->id_torneo."'",null,false);
+            $query = $this->db->get();
+            $resultado[$i]['nombre']=($query->result())[0]->nombre;
+            $i++;
+        }
+        return $resultado;
+    }
+
     public function insertTorneo($data){
        if($data['nombre']== null || $data['nombre'] == "")
            throw new Exception("No se puede crear un torneo sin nombre");
