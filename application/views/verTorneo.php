@@ -12,7 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="card mb-4 ">
             <div class="card-body">
                 <div class=" justify-content-between align-items-center">
-                    <?php echo form_open('Administrador/ganador/'.$id_torneo); ?>
+                    <?php  if($this->session->userdata('perfil') == 1) echo form_open('Administrador/ganador/'.$id_torneo); ?>
                     <table>
 
                         <?php
@@ -60,17 +60,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 $data= array(
                                     'name' => 'torneo'.$encuentro->id
                                 );
-                                $ganadores=array("1"=>$encuentro->equipo1,"2"=>$encuentro->equipo2);
 
-                                echo form_label('Ganador');
-                                echo form_dropdown($data,$ganadores,'large');
-                                $data = array(
-                                    'name' => 'envGanador'.$encuentro->id,
-                                    'type' => 'submit',
-                                    'value'=> 'Ganador',
-                                    'class'=> 'submit'
-                                );
-                                echo form_submit($data);
+                                if($this->session->userdata('perfil') == 1 && $fase==$maxFase)
+                                {
+                                    $ganadores=array("1"=>$encuentro->equipo1,"2"=>$encuentro->equipo2);
+
+                                    echo form_label('Ganador');
+                                    echo form_dropdown($data,$ganadores,'large');
+                                    $data = array(
+                                        'name' => 'envGanador'.$encuentro->id,
+                                        'type' => 'submit',
+                                        'value'=> 'Ganador',
+                                        'class'=> 'submit'
+                                    );
+                                    echo form_submit($data);
+                                }
+
                                 echo "</td>";
                                 $suma++;
                                 if($suma>=$encuentrosP/$fase)
@@ -85,7 +90,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ?>
 
                     </table>
-                    <?php echo form_close();?>
+                    <?php  if($this->session->userdata('perfil') == 1) echo form_close();?>
 
                 </div>
 

@@ -10,6 +10,7 @@ class Cliente extends CI_Controller {
          $this->load->database('default');
          $this->load->model('pista_model');
          $this->load->model('alquiler_model');
+         $this->load->model('torneo_model');
          $this->load->model('usuario_model');
          $this->comprobar();
      }
@@ -31,17 +32,77 @@ class Cliente extends CI_Controller {
      public function index($error=null){
          $data['titulo'] = 'Bienvenido Cliente';
 
-         $data['opciones'][0] = 'Alquilar Pista';
-         $data['opciones'][1] = 'Unirse a Torneo';
-
-
-         $this->load->view('cliente/header',$data);
-
-         if($error != null)
-             $this->load->view('error',array('error'=>$error));
-
-         $this->load->view('cliente/index',$data);
+         $this->alquileres();
      }
+
+    public function Ltorneo($error=null){
+
+        $data['titulo'] = 'Torneo';
+        $data['torneos'] = $this->torneo_model->selectTorneo();
+
+        $this->load->view('cliente/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('listadoTorneo',$data);
+    }
+
+    public function verTorneo($id_torneo,$error=null)
+    {
+        $torneo=($this->torneo_model->selectTorneo("id='".$id_torneo."'"))[0];
+        $data['titulo'] = 'Tabla '.$torneo->nombre;
+        $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
+
+        foreach ($encuentros as $encuentro)
+        {
+
+            $encuentro->equipo1=($this->torneo_model->selectEquipos("id='".
+                $encuentro->id_equipo1."'"))[0]->nombre;
+
+            $encuentro->equipo2=($this->torneo_model->selectEquipos("id='".
+                $encuentro->id_equipo2."'"))[0]->nombre;
+
+        }
+
+        $data['encuentros'] = $encuentros;
+        $data['id_torneo'] = $id_torneo;
+
+        $data['encuentrosPfase'] = $this->torneo_model->encuentrosPrimeraFase($id_torneo);
+        $this->load->view('cliente/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('verTorneo',$data);
+    }
+
+    public function torneo($error=null)
+    {
+
+        $data['titulo'] = 'Torneo';
+        $torneos = $this->torneo_model->selectTorneo();
+        $tipoPista = $this->pista_model->selectTipoPista();
+
+
+        foreach ($torneos as $torneo)
+        {
+            $data['torneos'][$torneo->id]=$torneo->nombre;
+        }
+
+        foreach ($tipoPista as $torneo)
+        {
+            $data['tipoTorneos'][$torneo->id]=$torneo->nombre;
+        }
+
+
+        $this->load->view('admin/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('admin/torneo',$data);
+    }
 
     public function alquilar(){
         $fecha=$this->input->post('fecha');

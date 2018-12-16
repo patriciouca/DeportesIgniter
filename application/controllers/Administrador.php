@@ -19,7 +19,6 @@ class Administrador extends CI_Controller {
 
      public function comprobar()
      {
-
          try{
              if($this->session->userdata('perfil')== null || $this->session->userdata('perfil') != 1)
              {
@@ -29,7 +28,6 @@ class Administrador extends CI_Controller {
          {
              redirect(base_url().'login');
          }
-
 
      }
 
@@ -85,11 +83,8 @@ class Administrador extends CI_Controller {
 
     public function listadoTorneo($error=null)
     {
-
         $data['titulo'] = 'Torneo';
         $data['torneos'] = $this->torneo_model->selectTorneo();
-
-
 
         $this->load->view('admin/header',$data);
 
@@ -131,6 +126,7 @@ class Administrador extends CI_Controller {
         $torneo=($this->torneo_model->selectTorneo("id='".$id_torneo."'"))[0];
         $data['titulo'] = 'Tabla '.$torneo->nombre;
         $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
+        $data['maxFase']=$this->torneo_model->selectMaxFase($id_torneo);
 
         foreach ($encuentros as $encuentro)
         {

@@ -23,7 +23,7 @@
                     <a class="nav-link" href="<?php echo base_url().'cliente/alquileres' ?>">Alquileres<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="<?php echo base_url().'cliente/torneo' ?>">Torneos<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?php echo base_url().'cliente/Ltorneo' ?>">Torneos<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="<?php echo base_url().'cliente/misDatos' ?>">Mis datos<span class="sr-only">(current)</span></a>

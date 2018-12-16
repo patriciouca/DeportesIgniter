@@ -24,7 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             else
                 echo "En juego";
             echo "<br>";
-            echo  "<a href=\"".base_url('administrador/verTorneo/'.$torneo->id)."\" class=\"btn btn-primary\">Ver torneo</a>";
+            if($this->session->userdata('perfil') == 1)
+                echo  "<a href=\"".base_url('administrador/verTorneo/'.$torneo->id)."\" class=\"btn btn-primary\">Ver torneo</a>";
+            else
+                echo  "<a href=\"".base_url('cliente/verTorneo/'.$torneo->id)."\" class=\"btn btn-primary\">Ver torneo</a>";
             echo "</div>";
             echo "</div>";
             echo "</div>";
