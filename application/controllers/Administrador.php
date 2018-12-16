@@ -19,9 +19,9 @@ class Administrador extends CI_Controller {
 
      public function comprobar()
      {
-         /*
+
          try{
-             if(!isset($this->session->get_userdata) || $this->session->get_userdata != null || $this->session->userdata('perfil') != '1')
+             if($this->session->userdata('perfil')== null || $this->session->userdata('perfil') != 1)
              {
                  redirect(base_url().'login');
              }
@@ -29,7 +29,7 @@ class Administrador extends CI_Controller {
          {
              redirect(base_url().'login');
          }
-            */
+
 
      }
 

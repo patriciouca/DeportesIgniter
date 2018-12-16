@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
             <?=form_password($password)?>
         </div>
-        <?=form_hidden('token',$token)?>
+        <!--<?=form_hidden('token',$token)?>-->
         <div class="forgot">
         <a href="reset.html">Olvidaste la contraseña?</a>
 </div>

@@ -19,14 +19,13 @@ class Login extends CI_Controller {
 	{
 		switch ($this->session->userdata('perfil')) {
 			case '':
-			 $data['token'] = $this->token();
 			 $data['titulo'] = 'Login con roles de usuario en codeigniter';
 			 
 			 break;
-			 case 'administrador':
+			 case '1':
 			 	redirect(base_url().'administrador');
 			 break;
-            case 'cliente':
+            case '2':
                 redirect(base_url(). 'cliente');
                 break;
 		}
@@ -37,14 +36,6 @@ class Login extends CI_Controller {
 
 	public function entrando()
 	 {
-	 	 /*
-		 if($this->input->post('token') && $this->input->post('token') == $this->session->userdata('token'))
-		 {
-		            //$this->form_validation->set_rules('username', 'nombre de usuario', 'required|trim|min_length[2]|max_length[150]|xss_clean');
-		            //$this->form_validation->set_rules('password', 'password', 'required|trim|min_length[5]|max_length[150]|xss_clean');
-		 
-		            //lanzamos mensajes de error si es que los hay
-		    */
 		 
 		 $username = $this->input->post('username');
 		 //$password = sha1($this->input->post('password'));
@@ -57,25 +48,27 @@ class Login extends CI_Controller {
 			 $data = array(
 			                 'is_logued_in' => TRUE,
 			                 'id_usuario' => $check_user->id,
-			                 'perfil' => $this->usuario_model->getTipo($check_user->id_tipo),
-			                 'username' => $check_user->username
+			                 'perfil' => $check_user->id_tipo,
+			                 'username' => $check_user->usuario
 			             );
 
+
 			 $this->session->set_userdata($data);
-			 $this->load->view('admin/header');
-			 $this->load->view('admin/index');
+             $this->index();
+
 		 }else{
 		     $this->index();
 		 }
 
 	}
-
+    /*
 	 public function token()
 	 {
 	 	$token = md5(uniqid(rand(),true));
 	 	$this->session->set_userdata('token',$token);
 	 	return $token;
 	 }
+    */
 
 	 public function logout_ci()
 	 {

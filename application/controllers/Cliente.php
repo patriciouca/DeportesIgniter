@@ -5,23 +5,27 @@ class Cliente extends CI_Controller {
  
      public function __construct() {
          parent::__construct();
-         $this->comprobar();
          $this->load->library(array('session'));
          $this->load->helper(array('url','form'));
          $this->load->database('default');
          $this->load->model('pista_model');
          $this->load->model('alquiler_model');
          $this->load->model('usuario_model');
+         $this->comprobar();
      }
 
      public function comprobar()
      {
-         /*
-         if($this->session->get_userdata != null || $this->session->userdata('perfil') != 'administrador')
+         try{
+             if($this->session->userdata('perfil')== null || $this->session->userdata('perfil') != 2)
+             {
+                 redirect(base_url().'login');
+             }
+         }catch(Exception $e)
          {
              redirect(base_url().'login');
          }
-         */
+
      }
 
      public function index($error=null){
