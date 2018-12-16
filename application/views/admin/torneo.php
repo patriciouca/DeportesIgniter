@@ -7,9 +7,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container">
     <h1><?= $titulo ?></h1>
 
+    <div class="row">
 
-    <div class="col-md-8 ">
-        <div class="card mb-4 ">
+    <div class="col-md-6 ">
+        <div class="card mb-6 ">
             <h3>Crear Torneo</h3>
             <div class="card-body">
                 <div class=" justify-content-between align-items-center">
@@ -47,8 +48,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php echo form_close();?>
                 </div></div></div></div>
 
-        <div class="col-md-8 ">
-                <div class="card mb-4 ">
+        <div class="col-md-6 ">
+                <div class="card mb-6 ">
                     <h3>Crear Equipo</h3>
                     <div class="card-body">
                         <div class=" justify-content-between align-items-center">
@@ -99,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-                <div class="col-md-8 ">
+                <div class="col-md-4 ">
                     <div class="card mb-4 ">
                         <h3>Añadir Integrante</h3>
                         <div class="card-body">
@@ -205,7 +206,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         </div>
 
-
+    </div>
 
 
 

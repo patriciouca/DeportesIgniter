@@ -10,7 +10,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     <div class="col-md-8 ">
         <div class="card mb-4 ">
-            <h3>Crear Torneo</h3>
             <div class="card-body">
                 <div class=" justify-content-between align-items-center">
                     <?php echo form_open('Administrador/ganador/'.$id_torneo); ?>
@@ -23,7 +22,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             foreach ($encuentros as $encuentro)
                             {
                                 if($suma==0)
+                                {
+
                                     echo "<tr>";
+                                    echo "<td class='font-weight-bold'>";
+                                    if(floor($encuentrosP/$fase)==1)
+                                        echo "Final";
+                                    else if($encuentrosP/$fase==2)
+                                        echo "Semifinal";
+                                    else if($encuentrosP/$fase==4)
+                                        echo "Cuartos de final";
+                                    else
+                                        echo  "Fase ".$fase;
+
+                                    echo "</td>";
+
+                                }
+
 
                                 echo "<td>";
                                 if($encuentro->ganador==1)

@@ -71,6 +71,22 @@ class Administrador extends CI_Controller {
         $this->load->view('admin/torneo',$data);
     }
 
+    public function listadoTorneo($error=null)
+    {
+
+        $data['titulo'] = 'Torneo';
+        $data['torneos'] = $this->torneo_model->selectTorneo();
+
+
+
+        $this->load->view('admin/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('listadoTorneo',$data);
+    }
+
     public function gestionar(){
 
         try{
@@ -100,9 +116,8 @@ class Administrador extends CI_Controller {
 
     public function verTorneo($id_torneo,$error=null)
     {
-
-
-        $data['titulo'] = 'Bienvenido Admin';
+        $torneo=($this->torneo_model->selectTorneo("id='".$id_torneo."'"))[0];
+        $data['titulo'] = 'Tabla '.$torneo->nombre;
         $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
 
         foreach ($encuentros as $encuentro)
