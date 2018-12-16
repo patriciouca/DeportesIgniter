@@ -37,10 +37,12 @@ class Torneo_model extends CI_Model {
             $query = $this->db->get();
 
             $resultado[$i]['id']=($query->result())[0]->id_torneo;
+            $resultado[$i]['id_equipo']=($query->result())[0]->id;
             $this->db->from('torneo');
             $this->db->where("id='".($query->result())[0]->id_torneo."'",null,false);
             $query = $this->db->get();
             $resultado[$i]['nombre']=($query->result())[0]->nombre;
+
             $i++;
         }
         return $resultado;
