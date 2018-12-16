@@ -21,6 +21,22 @@ class Torneo_model extends CI_Model {
         return $query->result();
     }
 
+    public function selectIntegrantes($where=null){
+
+        $this->db->from('integrante');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     public function selectMisTorneos($id_usu){
 
         $this->db->from('integrante');
@@ -38,6 +54,12 @@ class Torneo_model extends CI_Model {
 
             $resultado[$i]['id']=($query->result())[0]->id_torneo;
             $resultado[$i]['id_equipo']=($query->result())[0]->id;
+            $resultado[$i]['equipo']=($query->result())[0];
+
+            $integrantes=$this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'");
+            $resultado[$i]['integrantes']=$integrantes;
+            //var_dump($this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'"));
+            //$resultado[$i]['equipo']['integrantes']=$this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'");
             $this->db->from('torneo');
             $this->db->where("id='".($query->result())[0]->id_torneo."'",null,false);
             $query = $this->db->get();
@@ -56,6 +78,16 @@ class Torneo_model extends CI_Model {
 
     }
 
+    public function insertIntegrante($data){
+        if($data['nombre']== null || $data['nombre'] == "")
+            throw new Exception("No se puede crear un integrante sin nombre");
+        if($data['apellidos']== null || $data['apellidos'] == "")
+            throw new Exception("No se puede crear un integrante sin nombre");
+
+        $this->db->insert('integrante', $data);
+
+    }
+
    public function insertEquipo($data){
        if($data['nombre']== null || $data['nombre'] == "")
            throw new Exception("No se puede crear un equipo sin nombre");
@@ -64,12 +96,6 @@ class Torneo_model extends CI_Model {
 
     public function insertEncuentro($data){
         $this->db->insert('encuentro', $data);
-    }
-
-    public function insertIntegrante($data){
-        if($data['nombre']== null || $data['apellidos'] == "")
-            throw new Exception("No se puede crear un integrante sin nombre o apellidos");
-        $this->db->insert('integrante', $data);
     }
 
     public function seleccionarNumeros($equipos){

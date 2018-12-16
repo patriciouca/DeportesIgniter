@@ -62,11 +62,22 @@
             if(isset($torneos))
             {
                 $submit = array('name' => 'submit','class' => 'btn btn-primary', 'value' => 'Añadir', 'title' => 'Crear');
-                echo '<div class="col-md-6 "><div class="card mb-6 "><h3>Mis Torneos</h3>';
+                echo '<div class="col-md-12 "><div class="card mb-12 "><h3>Mis Torneos</h3>';
                 echo '<div class="card-body"> <div class=" justify-content-between align-items-center">';
                 foreach ($torneos as $torneo)
                 {
-                    echo '<div class="col-md-8 "><div class="card mb-8 "><h6>'.$torneo['nombre'].'</h6>';
+                    echo '<div class="col-md-12 "><div class="card mb-12 "><h4>'.$torneo['nombre'].'</h4>';
+                    echo "<p class=\"font-weight-bold\">Equipo:".$torneo['equipo']->nombre.'</p>';
+                    echo "<table class='table'>";
+                    echo '<thead><th>Número</th><th>Nombre</th><th>Apellidos</th></thead>';
+                    $i=0;
+                    foreach ($torneo['integrantes'] as $integrante)
+                    {
+                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td></tr>";
+                        $i++;
+                    }
+                    echo "</table>";
+                    echo "<h5>Añadir integrante</h5>";
                     echo form_open(base_url().'cliente/integrante');
                     echo '<div id="form_button">';
                     $data= array(

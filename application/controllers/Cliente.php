@@ -208,8 +208,9 @@ class Cliente extends CI_Controller {
         $nombre=$this->input->post('nombre');
         $apellidos=$this->input->post('apellidos');
         $equipo=$this->input->post('equipo');
-        $dataIntegrante=array('nombre'=>$nombre,'apellidos'=>$apellidos,'equipo'=>$equipo);
-        var_dump($dataIntegrante);
+        $dataIntegrante=array('id_usuario'=>-1,'nombre'=>$nombre,'apellidos'=>$apellidos,'id_equipo'=>$equipo);
+        $this->torneo_model->insertIntegrante($dataIntegrante);
+        $this->misDatos();
 
     }
 
