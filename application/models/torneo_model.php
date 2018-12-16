@@ -81,6 +81,31 @@ class Torneo_model extends CI_Model {
         $this->db->set('ganador', $ganador);
         $this->db->where('id', $id);
         $this->db->update('encuentro');
+
+    }
+
+    public function setFinalizado($id)
+    {
+        $this->db->set('finalizado', 1);
+        $this->db->where('id', $id);
+        $this->db->update('torneo');
+
+    }
+
+    public function selectEncuentrosW($where=null){
+
+        $this->db->from('encuentro');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function selectEncuentros($id_torneo){
@@ -99,6 +124,14 @@ class Torneo_model extends CI_Model {
         $query = $this->db->get();
 
         return count($query->result());
+    }
+
+    public function selectMaxFase($id_torneo){
+        $this->db->select_max('fase');
+        $this->db->where("id_torneo='".$id_torneo."'",null,false);
+        $max_fase  = (($this->db->get('encuentro'))->row_array())['fase'];
+
+        return $max_fase;
     }
 
     public function generarEncuentros($id){
@@ -140,6 +173,12 @@ class Torneo_model extends CI_Model {
             $equipos=$this->selectEquipos("id_torneo='".$id."'");
             if(count($equipos)%2!=0)
                 throw new Exception("Tiene que haber numero par de equipos");
+
+            $this->db->set('abierto', 0);
+            $this->db->where('id', $id);
+            $this->db->update('torneo');
+
+
         }
 
         $emparejamientos=$this->seleccionarNumeros($equipos);

@@ -33,6 +33,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ?>
                     </div>
 
+                    <div id="form_button">
+                        <?php
+                        $data= array(
+                            'name' => 'tipoTorneo'
+                        );
+
+                        echo form_label('Torneo'); ?>
+                        <?php echo form_dropdown($data,$tipoTorneos,'large'); ?>
+                    </div>
+
                 <div id="form_button">
                     <?php
                     $data = array(

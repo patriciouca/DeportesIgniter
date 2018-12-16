@@ -55,11 +55,17 @@ class Administrador extends CI_Controller {
 
         $data['titulo'] = 'Torneo';
         $torneos = $this->torneo_model->selectTorneo();
+        $tipoPista = $this->pista_model->selectTipoPista();
 
 
         foreach ($torneos as $torneo)
         {
             $data['torneos'][$torneo->id]=$torneo->nombre;
+        }
+
+        foreach ($tipoPista as $torneo)
+        {
+            $data['tipoTorneos'][$torneo->id]=$torneo->nombre;
         }
 
 
@@ -148,12 +154,17 @@ class Administrador extends CI_Controller {
         try{
             if($this->input->post('envTorneo') != null )
             {
-                $dataTipoTorneo = array('nombre' => $this->input->post('nTorneo'));
+                $dataTipoTorneo = array('nombre' => $this->input->post('nTorneo')
+                ,'tipo'=>$this->input->post('tipoTorneo'),'abierto'=>1);
                 $this->torneo_model->insertTorneo($dataTipoTorneo);
                 $this->torneo();
             }
             else if($this->input->post('envEquipo') != null)
             {
+                $torneo=($this->torneo_model->selectTorneo("id='".$this->input->post('torneo')."'"))[0];
+
+                if($torneo->abierto!=1)
+                    throw new Exception("El torneo no acepta más equipos");
                 $dataTipoEquipo = array('nombre' => $this->input->post('nEquipo'),'id_torneo' => $this->input->post('torneo'));
                 $this->torneo_model->insertEquipo($dataTipoEquipo);
                 $this->torneo();
@@ -242,10 +253,12 @@ class Administrador extends CI_Controller {
             {
                 if($this->input->post('envGanador'.$encuentro->id)!=null)
                 {
-
                     $this->torneo_model->setGanador($encuentro->id,$this->input->post('torneo'.$encuentro->id));
                 }
             }
+            if($this->hayFinalizado($id_torneo))
+                $this->torneo_model->setFinalizado($id_torneo);
+
             $this->verTorneo($id_torneo);
         }catch (Exception $e)
         {
@@ -253,6 +266,17 @@ class Administrador extends CI_Controller {
         }
 
 
+    }
+
+
+    public function hayFinalizado($id_torneo){
+        $maxFase=$this->torneo_model->selectMaxFase($id_torneo);
+        $cuantos=$this->torneo_model->selectEncuentrosW("id_torneo='".$id_torneo."' and fase='".$maxFase."'");
+
+        if(count($cuantos)==1)
+            return true;
+        else
+            return false;
     }
 
 
