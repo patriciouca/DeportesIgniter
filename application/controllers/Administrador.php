@@ -5,7 +5,6 @@ class Administrador extends CI_Controller {
  
      public function __construct() {
          parent::__construct();
-         $this->comprobar();
          $this->load->library(array('session'));
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
@@ -15,16 +14,23 @@ class Administrador extends CI_Controller {
          $this->load->model('alquiler_model');
          $this->load->model('login_model');
          $this->load->model('torneo_model');
+         $this->comprobar();
      }
 
      public function comprobar()
      {
          /*
-         if($this->session->get_userdata != null || $this->session->userdata('perfil') != 'administrador')
+         try{
+             if(!isset($this->session->get_userdata) || $this->session->get_userdata != null || $this->session->userdata('perfil') != '1')
+             {
+                 redirect(base_url().'login');
+             }
+         }catch(Exception $e)
          {
              redirect(base_url().'login');
          }
-         */
+            */
+
      }
 
 
