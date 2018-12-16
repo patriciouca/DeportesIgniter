@@ -10,7 +10,7 @@ class Usuario_model extends CI_Model {
 
         $this->db->where('id',$id);
         $query = $this->db->get('tipousuario');
-        return $query->result()[0]->nombre;
+        return ($query->result())[0];
     }
     public function selectUsuario($where=null){
 

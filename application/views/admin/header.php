@@ -25,8 +25,14 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="<?php echo base_url().'administrador/torneo' ?>">Torneo <span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="<?php echo base_url().'administrador/listadoTorneo' ?>">Listado Torneos <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active bg-danger pull-right">
+                    <a class="nav-link" href="<?php echo base_url().'login/logout_ci' ?>">Desconectar <span class="sr-only">(current)</span></a>
+                </li>
             </ul>
 
-        </div>
+        <div>
     </nav>
 </header>

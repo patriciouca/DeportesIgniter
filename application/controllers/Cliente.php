@@ -38,43 +38,7 @@ class Cliente extends CI_Controller {
 
          $this->load->view('cliente/index',$data);
      }
-    public function  reservar(){
-         $data['title'] = 'Reserva';
 
-         $this->load->view('cliente/header',$data);
-         $tipoPistas = $this->pista_model->selectTipoPista();
-         $actividades = Array();
-         foreach ($tipoPistas as $row) {
-
-            array_push($actividades,
-                    Array(
-                        $row->id,
-                        $row->nombre
-                    )
-            );
-         }
-        $data['actividades'] = $actividades;
-        $this->load->view('cliente/reserva',$data);
-
-    }
-    public function reservarPista($idTipoPista){
-
-        $consulta = $this->pista_model->selectPista("idTipoPista=".$idTipoPista);
-        $pistas = Array();
-        foreach ($consulta as $row) {
-            array_push($pistas,
-                Array(
-                    $row->id,
-                    $row->nombre
-                )
-
-            );
-        }
-        $data['title'] = 'Reservar Pista';
-        $data['pistas'] = $pistas;
-        $this->load->view('cliente/header',$data);
-        $this->load->view('cliente/reservaPista',$data);
-    }
     public function alquilar(){
         $fecha=$this->input->post('fecha');
         $hora=$this->input->post('hora');
@@ -86,19 +50,16 @@ class Cliente extends CI_Controller {
 
     }
 
-
-     public function pista($idPista)
+     public function pista($id)
      {
-         $data['title'] = 'Pista';
-         $pistaModelo = ($this->pista_model->selectPista("id=".$idPista));
-         foreach ($pistaModelo as $row){
-             $data['nombre'] = $row->nombre;
-             $data['id'] = $row->id;
-             $data['idTipoPista'] = $row->idTipoPista;
-         }
+         $data['titulo'] = 'Pista';
+         $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"));
+
+         $pista=array("pista" => $pistaModelo, "tipoPista" =>
+             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'")));
 
          $this->load->view('cliente/header',$data);
-         $this->load->view('cliente/pista', $data);
+         $this->load->view('cliente/pista', $pista);
      }
 
      public function disponibilidad($fecha)
@@ -122,8 +83,7 @@ class Cliente extends CI_Controller {
     }
 
     public function alquileres(){
-        $data['title'] = 'Mis alquileres';
-        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/header');
 
         if(is_null($this->input->post('filtroFechaInicio')))
             $data = $this->alquiler_model->selectAlquiler();
@@ -168,8 +128,7 @@ class Cliente extends CI_Controller {
     }
 
     public function misDatos(){
-        $data['title'] = 'Mis Datos';
-        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/header');
         $datos['nombre'] = 'aaron';
         $datos['apellidos'] = 'salinas sanchez';
         $datos['email'] = 'aron.salinas@gmail.com';

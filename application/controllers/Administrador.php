@@ -5,7 +5,6 @@ class Administrador extends CI_Controller {
  
      public function __construct() {
          parent::__construct();
-         $this->comprobar();
          $this->load->library(array('session'));
          $this->load->helper(array('url'));
          $this->load->helper(array('url','form'));
@@ -15,16 +14,21 @@ class Administrador extends CI_Controller {
          $this->load->model('alquiler_model');
          $this->load->model('login_model');
          $this->load->model('torneo_model');
+         $this->comprobar();
      }
 
      public function comprobar()
      {
-         /*
-         if($this->session->get_userdata != null || $this->session->userdata('perfil') != 'administrador')
+         try{
+             if($this->session->userdata('perfil')== null || $this->session->userdata('perfil') != 1)
+             {
+                 redirect(base_url().'login');
+             }
+         }catch(Exception $e)
          {
              redirect(base_url().'login');
          }
-         */
+
      }
 
 
@@ -55,11 +59,17 @@ class Administrador extends CI_Controller {
 
         $data['titulo'] = 'Torneo';
         $torneos = $this->torneo_model->selectTorneo();
+        $tipoPista = $this->pista_model->selectTipoPista();
 
 
         foreach ($torneos as $torneo)
         {
             $data['torneos'][$torneo->id]=$torneo->nombre;
+        }
+
+        foreach ($tipoPista as $torneo)
+        {
+            $data['tipoTorneos'][$torneo->id]=$torneo->nombre;
         }
 
 
@@ -69,6 +79,19 @@ class Administrador extends CI_Controller {
             $this->load->view('error',array('error'=>$error));
 
         $this->load->view('admin/torneo',$data);
+    }
+
+    public function listadoTorneo($error=null)
+    {
+        $data['titulo'] = 'Torneo';
+        $data['torneos'] = $this->torneo_model->selectTorneo();
+
+        $this->load->view('admin/header',$data);
+
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+
+        $this->load->view('listadoTorneo',$data);
     }
 
     public function gestionar(){
@@ -100,10 +123,10 @@ class Administrador extends CI_Controller {
 
     public function verTorneo($id_torneo,$error=null)
     {
-
-
-        $data['titulo'] = 'Bienvenido Admin';
+        $torneo=($this->torneo_model->selectTorneo("id='".$id_torneo."'"))[0];
+        $data['titulo'] = 'Tabla '.$torneo->nombre;
         $encuentros=$this->torneo_model->selectEncuentros($id_torneo);
+        $data['maxFase']=$this->torneo_model->selectMaxFase($id_torneo);
 
         foreach ($encuentros as $encuentro)
         {
@@ -133,12 +156,17 @@ class Administrador extends CI_Controller {
         try{
             if($this->input->post('envTorneo') != null )
             {
-                $dataTipoTorneo = array('nombre' => $this->input->post('nTorneo'));
+                $dataTipoTorneo = array('nombre' => $this->input->post('nTorneo')
+                ,'tipo'=>$this->input->post('tipoTorneo'),'abierto'=>1);
                 $this->torneo_model->insertTorneo($dataTipoTorneo);
                 $this->torneo();
             }
             else if($this->input->post('envEquipo') != null)
             {
+                $torneo=($this->torneo_model->selectTorneo("id='".$this->input->post('torneo')."'"))[0];
+
+                if($torneo->abierto!=1)
+                    throw new Exception("El torneo no acepta más equipos");
                 $dataTipoEquipo = array('nombre' => $this->input->post('nEquipo'),'id_torneo' => $this->input->post('torneo'));
                 $this->torneo_model->insertEquipo($dataTipoEquipo);
                 $this->torneo();
@@ -227,10 +255,12 @@ class Administrador extends CI_Controller {
             {
                 if($this->input->post('envGanador'.$encuentro->id)!=null)
                 {
-
                     $this->torneo_model->setGanador($encuentro->id,$this->input->post('torneo'.$encuentro->id));
                 }
             }
+            if($this->hayFinalizado($id_torneo))
+                $this->torneo_model->setFinalizado($id_torneo);
+
             $this->verTorneo($id_torneo);
         }catch (Exception $e)
         {
@@ -238,6 +268,17 @@ class Administrador extends CI_Controller {
         }
 
 
+    }
+
+
+    public function hayFinalizado($id_torneo){
+        $maxFase=$this->torneo_model->selectMaxFase($id_torneo);
+        $cuantos=$this->torneo_model->selectEncuentrosW("id_torneo='".$id_torneo."' and fase='".$maxFase."'");
+
+        if(count($cuantos)==1)
+            return true;
+        else
+            return false;
     }
 
 

@@ -21,11 +21,70 @@ class Torneo_model extends CI_Model {
         return $query->result();
     }
 
+    public function selectIntegrantes($where=null){
+
+        $this->db->from('integrante');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function selectMisTorneos($id_usu){
+
+        $this->db->from('integrante');
+        $this->db->where("id_usuario='".$id_usu."'",null,false);
+        $query = $this->db->get();
+        $resultado=null;
+        $i=0;
+        foreach ($query->result() as $integrante)
+        {
+            $equipo=$integrante->id_equipo;
+
+            $this->db->from('equipo');
+            $this->db->where("id='".$equipo."'",null,false);
+            $query = $this->db->get();
+
+            $resultado[$i]['id']=($query->result())[0]->id_torneo;
+            $resultado[$i]['id_equipo']=($query->result())[0]->id;
+            $resultado[$i]['equipo']=($query->result())[0];
+
+            $integrantes=$this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'");
+            $resultado[$i]['integrantes']=$integrantes;
+            //var_dump($this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'"));
+            //$resultado[$i]['equipo']['integrantes']=$this->selectIntegrantes("id_equipo='".$resultado[$i]['id_equipo']."'");
+            $this->db->from('torneo');
+            $this->db->where("id='".($query->result())[0]->id_torneo."'",null,false);
+            $query = $this->db->get();
+            $resultado[$i]['nombre']=($query->result())[0]->nombre;
+
+            $i++;
+        }
+        return $resultado;
+    }
+
     public function insertTorneo($data){
        if($data['nombre']== null || $data['nombre'] == "")
            throw new Exception("No se puede crear un torneo sin nombre");
 
         $this->db->insert('torneo', $data);
+
+    }
+
+    public function insertIntegrante($data){
+        if($data['nombre']== null || $data['nombre'] == "")
+            throw new Exception("No se puede crear un integrante sin nombre");
+        if($data['apellidos']== null || $data['apellidos'] == "")
+            throw new Exception("No se puede crear un integrante sin nombre");
+
+        $this->db->insert('integrante', $data);
 
     }
 
@@ -37,12 +96,6 @@ class Torneo_model extends CI_Model {
 
     public function insertEncuentro($data){
         $this->db->insert('encuentro', $data);
-    }
-
-    public function insertIntegrante($data){
-        if($data['nombre']== null || $data['apellidos'] == "")
-            throw new Exception("No se puede crear un integrante sin nombre o apellidos");
-        $this->db->insert('integrante', $data);
     }
 
     public function seleccionarNumeros($equipos){
@@ -81,6 +134,31 @@ class Torneo_model extends CI_Model {
         $this->db->set('ganador', $ganador);
         $this->db->where('id', $id);
         $this->db->update('encuentro');
+
+    }
+
+    public function setFinalizado($id)
+    {
+        $this->db->set('finalizado', 1);
+        $this->db->where('id', $id);
+        $this->db->update('torneo');
+
+    }
+
+    public function selectEncuentrosW($where=null){
+
+        $this->db->from('encuentro');
+
+        if($where == null){
+
+            $query = $this->db->get();
+            return $query->result();
+
+        }
+
+        $this->db->where($where,null,false);
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function selectEncuentros($id_torneo){
@@ -99,6 +177,14 @@ class Torneo_model extends CI_Model {
         $query = $this->db->get();
 
         return count($query->result());
+    }
+
+    public function selectMaxFase($id_torneo){
+        $this->db->select_max('fase');
+        $this->db->where("id_torneo='".$id_torneo."'",null,false);
+        $max_fase  = (($this->db->get('encuentro'))->row_array())['fase'];
+
+        return $max_fase;
     }
 
     public function generarEncuentros($id){
@@ -140,6 +226,12 @@ class Torneo_model extends CI_Model {
             $equipos=$this->selectEquipos("id_torneo='".$id."'");
             if(count($equipos)%2!=0)
                 throw new Exception("Tiene que haber numero par de equipos");
+
+            $this->db->set('abierto', 0);
+            $this->db->where('id', $id);
+            $this->db->update('torneo');
+
+
         }
 
         $emparejamientos=$this->seleccionarNumeros($equipos);

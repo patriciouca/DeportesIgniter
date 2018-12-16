@@ -52,10 +52,72 @@
                                 </div>
                             </form>
                         </div>
+
                     </div>
 
                 </div>
             </div>
         </div>
+        <?php
+            if(isset($torneos))
+            {
+                $submit = array('name' => 'submit','class' => 'btn btn-primary', 'value' => 'Añadir', 'title' => 'Crear');
+                echo '<div class="col-md-12 "><div class="card mb-12 "><h3>Mis Torneos</h3>';
+                echo '<div class="card-body"> <div class=" justify-content-between align-items-center">';
+                foreach ($torneos as $torneo)
+                {
+                    echo '<div class="col-md-12 "><div class="card mb-12 "><h4>'.$torneo['nombre'].'</h4>';
+                    echo "<p class=\"font-weight-bold\">Equipo:".$torneo['equipo']->nombre.'</p>';
+                    echo "<table class='table'>";
+                    echo '<thead><th>Número</th><th>Nombre</th><th>Apellidos</th></thead>';
+                    $i=0;
+                    foreach ($torneo['integrantes'] as $integrante)
+                    {
+                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td></tr>";
+                        $i++;
+                    }
+                    echo "</table>";
+                    echo "<h5>Añadir integrante</h5>";
+                    echo form_open(base_url().'cliente/integrante');
+                    echo '<div id="form_button">';
+                    $data= array(
+                        'name' => 'Lnombre'
+                    );
+
+                    echo form_label('Nombre');
+                    $data= array(
+                        'name' => 'nombre',
+                        'placeholder' => 'Introduzca el nombre del integrante',
+                        'class' => 'input_box'
+                    );
+                    echo form_input($data);
+                    echo '</div>';
+                    echo '<div id="form_button">';
+                    $data= array(
+                        'name' => 'Lapellidos'
+                    );
+
+                    echo form_label('Apellidos');
+                    $data= array(
+                        'name' => 'apellidos',
+                        'placeholder' => 'Introduzca los apellidos del integrante',
+                        'class' => 'input_box'
+                    );
+                    echo form_input($data);
+                    echo '</div>';
+                    $data= array(
+                        'name' => 'equipo',
+                        'class' => 'input_box d-none',
+                        'value' => $torneo['id_equipo']
+                    );
+                    echo form_input($data);
+                    echo form_submit($submit);
+                    echo form_close();
+                    echo '<div class="card-body"> <div class=" justify-content-between align-items-center"><div id="form_input">';
+                    echo '</div></div></div></div></div>';
+                }
+                echo '</div></div></div></div>';
+            }?>
+
     </div>
 </div>
