@@ -148,7 +148,7 @@ class Cliente extends CI_Controller {
     }
 
     public function alquileres(){
-        $this->load->view('cliente/header');
+
 
         if(is_null($this->input->post('filtroFechaInicio')))
             $data = $this->alquiler_model->selectAlquiler();
@@ -178,6 +178,8 @@ class Cliente extends CI_Controller {
             );
         }
         $datos['alquileres'] = $alquileres;
+        $datos['titulo']="Alquileres";
+        $this->load->view('cliente/header',$datos);
         $this->load->view('cliente/alquiler',$datos);
 
     }
@@ -192,8 +194,22 @@ class Cliente extends CI_Controller {
 
     }
 
+    public function equipo($id,$error=null){
+
+
+         $datos['equipo']=($this->torneo_model->selectEquipos("id='".$id."'"))[0];
+        $datos['titulo']="Equipo ".$datos['equipo']->nombre;
+        $datos['integrantes']=$this->torneo_model->selectIntegrantes("id_equipo='".$id."'");
+        $this->load->view('cliente/header',$datos);
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+        $this->load->view('equipo',$datos);
+
+    }
+
     public function misDatos(){
-        $this->load->view('cliente/header');
+         $datos['titulo']="Mis datos";
+
         $datos['nombre'] = 'aaron';
         $datos['apellidos'] = 'salinas sanchez';
         $datos['email'] = 'aron.salinas@gmail.com';
@@ -201,6 +217,7 @@ class Cliente extends CI_Controller {
 
         $datos['torneos']=$this->torneo_model->selectMisTorneos($this->session->userdata('id_usuario'));
 
+        $this->load->view('cliente/header',$datos);
         $this->load->view('cliente/cuenta',$datos);
     }
 
@@ -213,5 +230,7 @@ class Cliente extends CI_Controller {
         $this->misDatos();
 
     }
+
+
 
 }

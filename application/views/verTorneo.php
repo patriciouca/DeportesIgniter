@@ -7,24 +7,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div class="container">
     <h1><?= $titulo ?></h1>
 
+    <?php
+    if($this->session->userdata('perfil') == 1)
+        $ruta=base_url('administrador/equipo/');
+    else
+        $ruta=base_url('cliente/equipo/');
+
+    ?>
 
     <div class="col-md-8 ">
         <div class="card mb-4 ">
             <div class="card-body">
                 <div class=" justify-content-between align-items-center">
                     <?php  if($this->session->userdata('perfil') == 1) echo form_open('Administrador/ganador/'.$id_torneo); ?>
-                    <table>
-
+                    <table class="clasi table">
                         <?php
                             $encuentrosP=$encuentrosPfase;
                             $suma=0;
                             $fase=1;
+                            $par=0;
                             foreach ($encuentros as $encuentro)
                             {
                                 if($suma==0)
                                 {
-
-                                    echo "<tr>";
+                                    if($par==0){
+                                        echo "<tr class='bg-info'>";
+                                        $par=1;
+                                    }
+                                    else{
+                                        echo "<tr class='bg-active'>";
+                                        $par=0;
+                                    }
                                     echo "<td class='font-weight-bold'>";
                                     if(floor($encuentrosP/$fase)==1)
                                         echo "Final";
@@ -43,17 +56,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 echo "<td>";
                                 if($encuentro->ganador==1)
                                 {
-                                    echo "<p class='bg-success'>".$encuentro->equipo1."</p> -";
-                                    echo "<p class='bg-danger'>".$encuentro->equipo2."</p>";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo1."\" class='bg-success'>".$encuentro->equipo1."</a> -";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo2." \"class='bg-danger'>".$encuentro->equipo2."</a>";
                                 }
                                 else if($encuentro->ganador==2)
                                 {
-                                    echo "<p class='bg-danger'>".$encuentro->equipo1."</p> -";
-                                    echo "<p class='bg-success'>".$encuentro->equipo2."</p>";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo1."\" class='bg-danger'>".$encuentro->equipo1."</a> -";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo2."\" class='bg-success'>".$encuentro->equipo2."</a>";
                                 }
                                 else{
-                                    echo "<p>".$encuentro->equipo1."</p> -";
-                                    echo "<p>".$encuentro->equipo2."</p>";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo1."\>".$encuentro->equipo1."</a> -";
+                                    echo '<a href="'.$ruta.$encuentro->id_equipo2."\>".$encuentro->equipo2."</a>";
                                 }
 
 
