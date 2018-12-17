@@ -118,10 +118,10 @@ class Cliente extends CI_Controller {
      public function pista($id)
      {
          $data['titulo'] = 'Pista';
-         $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"));
+         $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"))[0];
 
          $pista=array("pista" => $pistaModelo, "tipoPista" =>
-             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'")));
+             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'"))[0]);
 
          $this->load->view('cliente/header',$data);
          $this->load->view('cliente/pista', $pista);

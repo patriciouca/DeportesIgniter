@@ -73,7 +73,7 @@
                     $i=0;
                     foreach ($torneo['integrantes'] as $integrante)
                     {
-                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td></tr>";
+                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td><td><i class=\"fas fa-igloo\"></i> </td></tr>";
                         $i++;
                     }
                     echo "</table>";
