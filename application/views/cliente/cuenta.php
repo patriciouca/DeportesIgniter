@@ -80,7 +80,6 @@
                             echo form_open(base_url().'cliente/borrar/integrante/'.$integrante->id);
                             echo "<td><button type=\"submit\" class=\"btn btn-danger\"><i class=\"fas fa-user-minus\"></i></button> </td>";
                             echo form_close();
-                            echo ")";
                         }
                         echo "</tr>";
                         $i++;
