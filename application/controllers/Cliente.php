@@ -31,10 +31,42 @@ class Cliente extends CI_Controller {
 
      public function index($error=null){
          $data['titulo'] = 'Bienvenido Cliente';
+         $this->load->view('cliente/header',$data);
+         $this->load->view('cliente/index');
 
-         $this->alquileres();
      }
-
+    public function reservar(){
+        $data['titulo'] = 'Reserva';
+        $consulta = $this->pista_model->selectTipoPista();
+        $actividades = Array();
+        foreach ($consulta as $row){
+            array_push($actividades,
+                array(
+                    $row->id,
+                    $row->nombre,
+                )
+            );
+        }
+        $data['actividades'] = $actividades;
+        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/reserva',$data);
+    }
+    public function reservarPista($idTipoPista){
+        $data['titulo'] = 'Reserva';
+        $consulta = $this->pista_model->selectPista("idTipoPista=".$idTipoPista);
+        $pistas = Array();
+        foreach ($consulta as $row){
+            array_push($pistas,
+                array(
+                    $row->id,
+                    $row->nombre,
+                )
+            );
+        }
+        $data['pistas'] = $pistas;
+        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/reservaPista',$data);
+    }
     public function Ltorneo($error=null){
 
         $data['titulo'] = 'Torneo';
@@ -113,19 +145,25 @@ class Cliente extends CI_Controller {
         $alquiler=array("idUsuario"=> $usuario,"idPista" =>$pista,"fecha"=> $fecha,"precio"=> $precio,"horaInicio"=> $hora);
         $this->alquiler_model->insertAlquiler($alquiler);
 
+
+        print '<script language="JavaScript">';
+        print 'alert("El alquiler se ha realizado con éxito");';
+        print '</script>';
+        $this->load->view('cliente/header');
+        $this->load->view('cliente/index');
+
+
     }
 
-     public function pista($id)
-     {
-         $data['titulo'] = 'Pista';
-         $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"));
-
-         $pista=array("pista" => $pistaModelo, "tipoPista" =>
-             ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'")));
-
-         $this->load->view('cliente/header',$data);
-         $this->load->view('cliente/pista', $pista);
-     }
+    public function pista($id)
+    {
+        $data['titulo'] = 'Pista';
+        $pistaModelo = ($this->pista_model->selectPista("id='".$id."'"))[0];
+        $pista=array("pista" => $pistaModelo, "tipoPista" =>
+            ($this->pista_model->selectTipoPista("id='".$pistaModelo->idTipoPista."'"))[0]);
+        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/pista', $pista);
+    }
 
      public function disponibilidad($fecha)
      {
@@ -148,10 +186,14 @@ class Cliente extends CI_Controller {
     }
 
     public function alquileres(){
-        $this->load->view('cliente/header');
+         $data['titulo'] = 'Mis alquileres';
 
-        if(is_null($this->input->post('filtroFechaInicio')))
-            $data = $this->alquiler_model->selectAlquiler();
+
+        if(is_null($this->input->post('filtroFechaInicio'))){
+            $idUsuario = $this->session->userdata('id_usuario');
+            $data = $this->alquiler_model->selectAlquiler("idUsuario=".$idUsuario);
+        }
+
         else{
             $where = $this->filtrarAlquiler($this->input->post('filtroFechaInicio'));
             $data = $this->alquiler_model->selectAlquiler($where);
@@ -177,8 +219,9 @@ class Cliente extends CI_Controller {
                 )
             );
         }
-        $datos['alquileres'] = $alquileres;
-        $this->load->view('cliente/alquiler',$datos);
+        $data['alquileres'] = $alquileres;
+        $this->load->view('cliente/header',$data);
+        $this->load->view('cliente/alquiler',$data);
 
     }
 
@@ -193,11 +236,16 @@ class Cliente extends CI_Controller {
     }
 
     public function misDatos(){
-        $this->load->view('cliente/header');
-        $datos['nombre'] = 'aaron';
-        $datos['apellidos'] = 'salinas sanchez';
-        $datos['email'] = 'aron.salinas@gmail.com';
-        $datos['tarjeta'] = '49120401lk';
+         $datos['titulo'] = 'Mis datos';
+        $this->load->view('cliente/header',$datos);
+
+        $datos['nombre'] = $this->session->userdata('nombre');
+        $datos['apellidos'] = $this->session->userdata('apellidos');
+        $datos['correo'] = $this->session->userdata('correo');
+        $datos['dni'] = $this->session->userdata('dni');
+        $datos['tarjetaCredito'] = $this->session->userdata('tarjetaCredito');
+        $datos['telefono'] = $this->session->userdata('telefono');
+        $datos['direccion'] = $this->session->userdata('direccion');
 
         $datos['torneos']=$this->torneo_model->selectMisTorneos($this->session->userdata('id_usuario'));
 
@@ -205,6 +253,7 @@ class Cliente extends CI_Controller {
     }
 
     public function integrante(){
+
         $nombre=$this->input->post('nombre');
         $apellidos=$this->input->post('apellidos');
         $equipo=$this->input->post('equipo');
