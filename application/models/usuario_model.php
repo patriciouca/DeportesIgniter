@@ -28,6 +28,13 @@ class Usuario_model extends CI_Model {
         return $query->result();
 
     }
+    public function setSaldoUsuario($id,$saldo){
+        $this->db->set('saldo', $saldo);
+        $this->db->where('id', $id);
+        $this->db->update('usuario');
+
+    }
+
 
     public function selectUsuarioID($where=null){
 

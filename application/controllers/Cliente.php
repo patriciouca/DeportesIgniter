@@ -43,6 +43,22 @@ class Cliente extends CI_Controller {
          $this->alquileres();
      }
 
+    public function meterFondos($error=null){
+
+        $usuario=($this->usuario_model->selectUsuario("id='".($this->session->userdata('id_usuario'))."'"))[0];
+        if(isset($usuario->tarjetaCredito))
+        {
+            $dinero=$this->input->post('fondos');
+            $this->usuario_model->setSaldoUsuario($usuario->id,$usuario->saldo+$dinero);
+            $this->misDatos();
+        }
+        else{
+            $this->misDatos("Tarjeta de credito no valida");
+        }
+
+
+    }
+
     public function Ltorneo($error=null){
 
         $data['titulo'] = 'Torneo';
@@ -215,17 +231,18 @@ class Cliente extends CI_Controller {
 
     }
 
-    public function misDatos(){
+    public function misDatos($error=null){
+         $usuario=($this->usuario_model->selectUsuario("id='".($this->session->userdata('id_usuario'))."'"))[0];
+
          $datos['titulo']="Mis datos";
 
-        $datos['nombre'] = 'aaron';
-        $datos['apellidos'] = 'salinas sanchez';
-        $datos['email'] = 'aron.salinas@gmail.com';
-        $datos['tarjeta'] = '49120401lk';
+        $datos['usuario']=$usuario;
 
         $datos['torneos']=$this->torneo_model->selectMisTorneos($this->session->userdata('id_usuario'));
 
         $this->load->view('cliente/header',$datos);
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
         $this->load->view('cliente/cuenta',$datos);
     }
 

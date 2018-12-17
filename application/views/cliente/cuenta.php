@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-9">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
@@ -16,26 +16,32 @@
                                 <div class="form-group row">
                                     <label for="name" class="col-4 col-form-label">Nombre</label>
                                     <div class="col-8">
-                                        <input id="name" name="name" placeholder=<?php echo $nombre;?> class="form-control here" type="text">
+                                        <input id="name" name="name" placeholder="<?php echo $usuario->nombre;?>" class="form-control here" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="lastname" class="col-4 col-form-label">Apellidos</label>
                                     <div class="col-8">
-                                        <input id="lastname" name="lastname" placeholder=<?php echo $apellidos;?> class="form-control here" type="text">
+                                        <input id="lastname" name="lastname" placeholder="<?php echo $usuario->apellidos;?>" class="form-control here" type="text">
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="email" class="col-4 col-form-label">Email</label>
                                     <div class="col-8">
-                                        <input id="email" name="email"  placeholder=<?php echo $email;?> class="form-control here" required="required" type="text">
+                                        <input id="email" name="email"  placeholder="<?= $usuario->correo;?>" class="form-control here" required="required" type="text">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="tarjetaCredito" class="col-4 col-form-label">Tarjeta de crédito</label>
                                     <div class="col-8">
-                                        <input id="tarjetaCredito" name="tarjetaCredito" placeholder=<?php echo $tarjeta;?>  class="form-control here" type="text">
+                                        <?php
+                                        $tarjeta ="";
+
+                                            if(isset($usuario->tarjetaCredito))
+                                                $tarjeta=$usuario->tarjetaCredito;
+                                        ?>
+                                        <input id="tarjetaCredito" name="tarjetaCredito" placeholder="<?php echo $tarjeta;?>"  class="form-control here" type="text">
                                     </div>
                                 </div>
 
@@ -55,6 +61,42 @@
 
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12"><div class="card mb-12 ">
+                <h3>Fondos</h3>
+                <div class="card-body offset-4  ">
+                    <div class=" justify-content-between align-items-center">
+                        <div id="form_button">
+                            <?php
+                            echo form_open(base_url()."cliente/meterfondos");
+                            echo form_label('Fondos ', 'f');
+                            $data = array(
+                                'name' => 'ff',
+                                'type' => 'number',
+                                'value'=> $usuario->saldo,
+                                'disabled'=>'disabled'
+                           );
+                            echo form_input($data); ?>
+                        </div>
+                        <div id="form_button">
+                            <?php
+                            echo form_label('Fondos a introducir ', 'f');
+                            $data = array(
+                                'name' => 'fondos',
+                                'type' => 'number',
+                                'value'=> 1,
+                                'min'=>1
+
+                            );
+                            echo form_input($data); ?>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Aumentar saldo</button>
+
+                        <?php echo form_close();?>
+                    </div>
                 </div>
             </div>
         </div>
