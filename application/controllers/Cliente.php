@@ -29,10 +29,16 @@ class Cliente extends CI_Controller {
 
      }
 
+     public function borrar($accion,$id,$error=null){
+        if($accion=="integrante")
+        {
+            $this->torneo_model->borrarIntegrante($id);
+            $this->misDatos();
+        }
+     }
+
      public function index($error=null){
          $data['titulo'] = 'Bienvenido Cliente';
-         $this->load->view('cliente/header',$data);
-         $this->load->view('cliente/index');
 
      }
     public function reservar(){
@@ -189,11 +195,8 @@ class Cliente extends CI_Controller {
          $data['titulo'] = 'Mis alquileres';
 
 
-        if(is_null($this->input->post('filtroFechaInicio'))){
-            $idUsuario = $this->session->userdata('id_usuario');
-            $data = $this->alquiler_model->selectAlquiler("idUsuario=".$idUsuario);
-        }
-
+        if(is_null($this->input->post('filtroFechaInicio')))
+            $data = $this->alquiler_model->selectAlquiler();
         else{
             $where = $this->filtrarAlquiler($this->input->post('filtroFechaInicio'));
             $data = $this->alquiler_model->selectAlquiler($where);
@@ -232,6 +235,19 @@ class Cliente extends CI_Controller {
             $where = "fecha>="."'".$this->input->post('filtroFechaInicio')."'";
 
         return $where;
+
+    }
+
+    public function equipo($id,$error=null){
+
+
+         $datos['equipo']=($this->torneo_model->selectEquipos("id='".$id."'"))[0];
+        $datos['titulo']="Equipo ".$datos['equipo']->nombre;
+        $datos['integrantes']=$this->torneo_model->selectIntegrantes("id_equipo='".$id."'");
+        $this->load->view('cliente/header',$datos);
+        if($error != null)
+            $this->load->view('error',array('error'=>$error));
+        $this->load->view('equipo',$datos);
 
     }
 

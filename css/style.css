@@ -77,6 +77,13 @@ input[type="date"] {
   background-color: #007bff !important;
   border-color: #007bff !important;
 }
-h2{
-  text-align: center;
+
+.clasi a{
+    color: black;
+    text-decoration: none;
+}
+
+.clasi a:hover{
+    color: black;
+    text-decoration: none;
 }

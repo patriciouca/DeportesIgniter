@@ -7,7 +7,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <div class="container">
-    <h1><?= $nombre ?></h1>
+
+    <h1><?= $pista->nombre ?></h1>
+    <?= $tipoPista->nombre  ?>
 
     <?php
 
@@ -35,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         'name' => 'pista',
         'class' => 'd-none',
         'type' =>'text',
-        'value'=> $id
+        'value'=> $pista->id
     );
     echo form_input($data);
 
@@ -95,6 +97,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
 
     function convertirHoraEnNumero(hora){
+
         return parseInt((hora.substring(0, 5)).replace(':',''));
     }
 
@@ -112,11 +115,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var contarM,contarT;
 
         $.get(url2+dia, function( data ) {
-
-           horaIni1=convertirHoraEnNumero(data.horaInicioM);
-           horaIni2=convertirHoraEnNumero(data.horaInicioT);
-           horaFin1=convertirHoraEnNumero(data.horaFinM);
-           horaFin2=convertirHoraEnNumero(data.horaFinT);
+           horaIni1=convertirHoraEnNumero(data[0].horaInicioM);
+           horaIni2=convertirHoraEnNumero(data[0].horaInicioT);
+           horaFin1=convertirHoraEnNumero(data[0].horaFinM);
+           horaFin2=convertirHoraEnNumero(data[0].horaFinT);
             contarM=horaIni1==0?false:true;
             contarT=horaIni2==0?false:true;
 
@@ -124,6 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             for (;i<24;i++)
             {
                 hora=convertirHoraEnNumero(formatoHora(i));
+
                 if ((hora >= horaIni1 && hora < horaFin1 && contarM) || (hora >= horaIni2 && hora < horaFin2 && contarT))
                 {
                     if(pillada(formatoHora(i),fecha))
