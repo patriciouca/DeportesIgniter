@@ -29,6 +29,14 @@ class Cliente extends CI_Controller {
 
      }
 
+     public function borrar($accion,$id,$error=null){
+        if($accion=="integrante")
+        {
+            $this->torneo_model->borrarIntegrante($id);
+            $this->misDatos();
+        }
+     }
+
      public function index($error=null){
          $data['titulo'] = 'Bienvenido Cliente';
 

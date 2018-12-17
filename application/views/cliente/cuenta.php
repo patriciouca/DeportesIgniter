@@ -73,7 +73,16 @@
                     $i=0;
                     foreach ($torneo['integrantes'] as $integrante)
                     {
-                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td><td><i class=\"fas fa-igloo\"></i> </td></tr>";
+                        echo "<tr><td>$i</td><td>".$integrante->nombre."</td> <td>".$integrante->apellidos."</td>";
+                        if($integrante->id_usuario==-1)
+                        {
+
+                            echo form_open(base_url().'cliente/borrar/integrante/'.$integrante->id);
+                            echo "<td><button type=\"submit\" class=\"btn btn-danger\"><i class=\"fas fa-user-minus\"></i></button> </td>";
+                            echo form_close();
+                            echo ")";
+                        }
+                        echo "</tr>";
                         $i++;
                     }
                     echo "</table>";
@@ -120,4 +129,9 @@
             }?>
 
     </div>
+
+    <script>
+        
+
+    </script>
 </div>
