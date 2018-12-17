@@ -19,7 +19,7 @@
             <ul class="navbar-nav mr-auto">
 
                 <li class="nav-item active">
-                    <a class="nav-link" href="<?php echo base_url().'cliente/index' ?>">Reserva <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="<?php echo base_url().'cliente/reserva' ?>">Reserva <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="<?php echo base_url().'cliente/alquileres' ?>">Alquileres<span class="sr-only">(current)</span></a>

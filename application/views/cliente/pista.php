@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         'value'=> 'Alquilar',
         'class'=> 'btn-primary'
     );
-    echo form_submit($data);
+    echo '<button type="submit" name="alquilar" value="Alquilar" class="btn-primary">Alquilar</button>';
     ?>
     <?php echo form_close();?>
  </div>
@@ -145,7 +145,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     function peticionGet() {
 
-        $.get(url+calendario, function( data ) {
+        $.get(url+calendario+"/"+<?=$pista->id?>, function( data ) {
             mostrarDia(data);
             almacenar=calendario;
         });

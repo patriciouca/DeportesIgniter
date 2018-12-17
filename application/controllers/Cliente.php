@@ -151,9 +151,9 @@ class Cliente extends CI_Controller {
          $this->load->view('cliente/pista', $pista);
      }
 
-     public function disponibilidad($fecha)
+     public function disponibilidad($fecha,$id)
      {
-         $alquileres = $this->alquiler_model->selectAlquiler("fecha='".$fecha."' order by horaInicio asc");
+         $alquileres = $this->alquiler_model->selectAlquiler("idPista='".$id."' and fecha='".$fecha."' order by horaInicio asc");
          $response['success'] = 1;
          header('Content-Type: application/json');
          header('Access-Control-Allow-Origin: *');
