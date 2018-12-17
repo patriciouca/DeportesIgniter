@@ -83,16 +83,49 @@ class Login extends CI_Controller {
      }
 
      public function registrarUsuario(){
-         $usuario['id_tipo'] = '1';
-         $usuario['nombre'] = $this->input->post('nombre');
-         $usuario['apellidos'] = $this->input->post('apellidos');
-         $usuario['dni'] = $this->input->post('dni');
-         $usuario['telefono'] = $this->input->post('telefono');
-         $usuario['tarjetaCredito'] = $this->input->post('tarjeta');
-         $usuario['usuario'] = $this->input->post('username');
-         $usuario['password'] = $this->input->post('password');
-         $this->usuario_model->insert($usuario);
+         /*if($this->input->post('nombre') == null OR $this->input->post('apellidos') == null OR
+             $this->input->post('dni') == null OR $this->input->post('telefono') == null OR
+             $this->input->post('tarjetaCredito') == null OR $this->input->post('username') == null OR
+             $this->input->post('password') == null){
 
-     }
+             print '<script language="JavaScript">';
+             print 'alert("Rellena todos los campos por favor");';
+             print '</script>';
+             $this->load->view('header');
+             $this->load->view('registro');
+
+         else{*/
+            if($this->input->post('dni') == null) {
+                print '<script language="JavaScript">';
+                print 'alert("Rellena todos los campos por favor");';
+                print '</script>';
+            }
+             if($this->input->post('nombre') != null AND $this->input->post('apellidos') != null AND
+                 $this->input->post('dni') != null AND $this->input->post('telefono') != null AND
+                 $this->input->post('tarjetaCredito') != null AND $this->input->post('username') != null AND
+                 $this->input->post('password') != null) {
+                 $dataUsuario = array('id_tipo' => '1',
+                     'nombre' => $this->input->post('nombre'),
+                     'apellidos' => $this->input->post('apellidos'),
+                     'dni' => $this->input->post('dni'),
+                     'direccion' => 'Cadiz',
+                     'telefono' => $this->input->post('telefono'),
+                     'correo' => $this->input->post('username'),
+                     'tarjetaCredito' => $this->input->post('tarjeta'),
+                     'usuario' => $this->input->post('username'),
+                     'password' => $this->input->post('password')
+                 );
+                 $this->usuario_model->insert($dataUsuario);
+                 print '<script language="JavaScript">';
+                 print 'alert("Usuario creado con éxito");';
+                 print '</script>';
+                 $this->index();
+             }
+         }
+
+
+
+
+
 
 }
